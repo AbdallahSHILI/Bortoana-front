@@ -57,7 +57,11 @@ function Login() {
   const handleTikTokLogin = async (e) => {
     e.preventDefault()
     try {
+<<<<<<< HEAD
       window.location.href = 'http://localhost:5001/api/tiktok/login'
+=======
+      window.location.href = 'http://localhost:5000/api/tiktok/login'
+>>>>>>> origin/develop
       // window.location.href = response.data.url; // Redirect to TikTok login URL
     } catch (error) {
       console.error('TikTok login failed:', error.message)

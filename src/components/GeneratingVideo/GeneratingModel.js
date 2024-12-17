@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom'
 import { FaRedo, FaEdit, FaSave } from 'react-icons/fa'
 import Video from '../../assests/images/video2.png'
 import Start from '../../assests/images/start.png'
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/develop
 export default function GeneratingModal({ show, onClose }) {
   const [isGenerating, setIsGenerating] = useState(true)
 
