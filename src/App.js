@@ -17,7 +17,7 @@ const router = createBrowserRouter(
   ],
   {
     basename: '/newbortoaana' // Add the basename for your GitHub Pages URL
-  } 
+  }
 )
 
 const App = () => {

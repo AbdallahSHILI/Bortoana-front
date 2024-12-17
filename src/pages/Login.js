@@ -17,7 +17,7 @@ function Login() {
     e.preventDefault() // Prevent the default form submission
     setLoading(true)
     try {
-      const response = await axios.post('http://localhost:5000/api/user/login', {
+      const response = await axios.post('http://localhost:5001/api/user/login', {
         email,
         password
       })
@@ -50,7 +50,7 @@ function Login() {
 
   const handleGoogleLogin = async (e) => {
     e.preventDefault()
-    window.open('http://localhost:5000/api/googleauth/auth/google', '_self')
+    window.open('http://localhost:5001/api/googleauth/auth/google', '_self')
   }
   // tiktok login
 

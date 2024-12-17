@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import SideBar from '../components/Home/SideBar'
 import JellyVideo from '../assests/videos/videojelly.gif'
@@ -50,10 +50,10 @@ export default function Home() {
 
           {/* left screen */}
           {!isZoomed && !isSettingsZoomed && (
-            <div className="flex items-center justify-center flex-col absolute bottom-28 left-7 z-20">
-              <img src={imageVideo} alt="Personne" className="  " />
+            <div className="flex  items-center justify-center flex-col w-60 m-4 absolute bottom-44 left-12 z-20">
+              <img src={imageVideo} alt="Personne" className=" cursor-pointer rounded-full " />
 
-              <div style={{ width: '350px', wordWrap: 'break-word' }} className=" text-center z-30">
+              <div className=" text-center text-xs text-white z-30">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                 incididunt ut labore et dolore magna aliqua.
               </div>
@@ -72,19 +72,9 @@ export default function Home() {
                 <img src={Cross} alt="Close button" className="w-6 h-6" />
               </button>
             )}
-            {/*  cross button for settings  */}
-            {/* {isSettingsZoomed && (
-              <button
-                onClick={() => setIsSettingsZoomed(false)}
-                className="absolute top-20 right-48 z-50 bg-white p-2 rounded-full border border-red-500 "
-                aria-label="Close zoom"
-              >
-                <img src={Cross} alt="Close button" className="w-6 h-6" />
-              </button>
-            )} */}
           </div>
           {/* end cross button */}
-          <div className="bg-red-200">
+          <div className="w-[1100px] ">
             <JellyFish
               isZoomed={isZoomed}
               setIsZoomed={setIsZoomed}

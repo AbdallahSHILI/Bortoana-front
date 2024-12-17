@@ -3,7 +3,8 @@ import Form from '../Inputs/Form' // Adjust the path as necessary
 import JellyFishImage from '../../assests/images/c.png'
 import SettingsIcon from '../../assests/images/settings/setting.png'
 import SettingsBoldIcon from '../../assests/images/settings/settingbold.png'
-
+import InstagramAuth from '../AuthIcons/InstagramAuth'
+import PostButton from '../PostPublishButton'
 const JellyFish = ({ isZoomed, setIsZoomed, isSettingsZoomed, setIsSettingsZoomed }) => {
   const [isHovered, setIsHovered] = useState(false)
 
@@ -14,11 +15,11 @@ const JellyFish = ({ isZoomed, setIsZoomed, isSettingsZoomed, setIsSettingsZoome
 
   return (
     <div
-      className={`flex justify-center items-center h-screen bg-black overflow-hidden transition-transform duration-700 ${
+      className={`flex justify-center w-full items-center h-screen bg-black overflow-hidden transition-transform duration-700 ${
         isZoomed || isSettingsZoomed ? 'scale-150' : 'scale-100'
       }`}
       style={{
-        transformOrigin: 'center center'
+        transformOrigin: 'center'
       }}
     >
       {/* Rectangle for zoom effect, only show if isSettingsZoomed is false */}
@@ -27,7 +28,7 @@ const JellyFish = ({ isZoomed, setIsZoomed, isSettingsZoomed, setIsSettingsZoome
           onClick={() => setIsZoomed(!isZoomed)}
           className={`transition-all rounded-xl duration-700 ${
             isZoomed ? 'w-2/4 h-2/4 fixed' : 'w-28 h-24 fixed'
-          } flex items-center justify-center z-20`}
+          } flex items-center cursor-pointer hover:bg-white hover:bg-opacity-25 justify-center z-20`}
           style={{
             top: isZoomed ? '13%' : '70px',
             left: isZoomed ? '13%' : '650px',
@@ -48,7 +49,7 @@ const JellyFish = ({ isZoomed, setIsZoomed, isSettingsZoomed, setIsSettingsZoome
           style={{
             zIndex: isSettingsZoomed ? 20 : 50 // Set z-index dynamically based on isZoomed
           }}
-          className={`absolute top-16 left-[calc(650px + 5rem)]  transition-transform duration-700 ${
+          className={`absolute w-20 h-20 top-16 left-[calc(650px + 5rem)]  transition-transform duration-700 ${
             isSettingsZoomed ? 'scale-[3]  -translate-x-[39vw] translate-y-[9vh]' : ''
           }`}
           onMouseEnter={() => setIsHovered(true)} // Hover effect starts
@@ -57,15 +58,15 @@ const JellyFish = ({ isZoomed, setIsZoomed, isSettingsZoomed, setIsSettingsZoome
           <img
             src={isHovered ? SettingsBoldIcon : SettingsIcon} //Swap icons based on hover state
             alt="Settings"
-            className="w-20 h-20 cursor-pointer ml-48 mt-8 z-50"
-            onClick={(e)=>handleSettingsClick(e)}
+            className="w-20 h-20 cursor-pointer ml-[95%] mt-8 z-50"
+            onClick={(e) => handleSettingsClick(e)}
           />
         </div>
       )}
 
       {/* Jellyfish image with zoom and translate effect */}
       <div
-        className={`absolute flex justify-center items-center transition-transform duration-700 ${
+        className={`absolute flex  justify-center items-center transition-transform duration-700 ${
           isZoomed || isSettingsZoomed
             ? `scale-150 ${
                 isSettingsZoomed
@@ -79,13 +80,15 @@ const JellyFish = ({ isZoomed, setIsZoomed, isSettingsZoomed, setIsSettingsZoome
           left: isZoomed ? 'bottom right' : '660px'
         }}
       >
+        <InstagramAuth />
         <img
           src={JellyFishImage}
           alt="Jellyfish"
-          className={`transition-opacity duration-700 ${
+          className={`transition-opacity  duration-700 ${
             isZoomed || isSettingsZoomed ? 'opacity-100' : 'opacity-100'
           }`}
         />
+
         {/* Button positioned at the top-left of the jellyfish */}
         <button
           className="absolute top-16 left-10 w-12 h-12 z-30"
