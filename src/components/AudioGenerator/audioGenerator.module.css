@@ -1,0 +1,101 @@
+.container {
+  margin-left: 4rem;
+  width: 100%;
+}
+
+.audioTextImage {
+  width: 15rem;
+}
+
+.audioContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.audioControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.audioIcon {
+  height: 8rem;
+  width: 8rem;
+}
+
+.statusText {
+  color: white;
+  font-size: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.loader {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  background-color: #3b82f6;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinnerAnimation {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top-color: white;
+  border-radius: 9999px;
+  animation: spin 1s linear infinite;
+}
+
+.stopButton {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  background-color: #dc2626;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3px;
+}
+
+.stopButtonBar {
+  background-color: white;
+  width: 0.25rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+}
+
+.recordButton {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  border: 2px solid white;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recordButtonDot {
+  background-color: #dc2626;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

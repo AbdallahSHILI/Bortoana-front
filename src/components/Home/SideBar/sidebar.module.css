@@ -1,0 +1,35 @@
+.container {
+  height: 100%;
+}
+
+.sidebar {
+  background: #1f1f1f;
+  width: 320px;
+  border-radius: 8px;
+}
+
+.content {
+  margin: 16px 0 0 0;
+  padding: 20px;
+  width: 100%;
+}
+
+.title {
+  color: white;
+}
+
+.listContainer {
+  height: 520px;
+  overflow-y: auto;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.listContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.listContainer {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

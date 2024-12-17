@@ -1,0 +1,77 @@
+.profileContainer {
+  display: flex;
+  align-items: center;
+}
+
+.profileImage {
+  height: 2.75rem;
+  width: 2.75rem;
+  border-radius: 9999px;
+  position: absolute;
+  left: 1.25rem;
+  top: 3.5rem;
+}
+
+@media (min-width: 640px) {
+  .profileImage {
+    width: 2.75rem;
+    height: 2.75rem;
+    left: 2.25rem;
+    top: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .profileImage {
+    left: 2rem;
+    top: 3.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .profileImage {
+    height: 4rem;
+    width: 4rem;
+    left: 3rem;
+    top: 3rem;
+  }
+}
+
+.textContainer {
+  margin-left: 4rem;
+}
+
+@media (min-width: 640px) {
+  .textContainer {
+    margin-left: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .textContainer {
+    margin-left: 6rem;
+  }
+}
+
+.welcomeText {
+  color: #b7b7b7;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .welcomeText {
+    font-size: 1rem;
+  }
+}
+
+.userName {
+  color: white;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .userName {
+    font-size: 1.125rem;
+  }
+}

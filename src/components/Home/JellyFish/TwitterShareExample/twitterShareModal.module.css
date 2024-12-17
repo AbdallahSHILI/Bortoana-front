@@ -1,0 +1,91 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  position: relative;
+  min-width: 350px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.closeButton:hover {
+  color: #000;
+}
+
+.modalHeader {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  color: #1da1f2;
+  font-size: 1.5rem;
+}
+
+.uploadControls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.navigateButton,
+.postButton {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.navigateButton {
+  background-color: #1da1f2;
+  color: white;
+}
+
+.navigateButton:hover {
+  background-color: #1a91da;
+  transform: translateY(-1px);
+}
+
+.postButton {
+  background-color: #17bf63;
+  color: white;
+}
+
+.postButton:hover {
+  background-color: #15ac59;
+  transform: translateY(-1px);
+}
+
+.uploadControls input[type='file'] {
+  display: none;
+}
