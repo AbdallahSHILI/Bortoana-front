@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Play, Share2 } from 'lucide-react'
 import Cookies from 'js-cookie'
 
-const TwitterVideoShare = () => {
+const LinkedInVideoShare = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
@@ -16,38 +16,35 @@ const TwitterVideoShare = () => {
     setMessage('')
 
     try {
-      // Get tokens from cookies
-      const oauth_token = Cookies.get('twitter_oauth_token')
-      const oauth_token_secret = Cookies.get('twitter_oauth_token_secret')
-
-      // Validate tokens exist
-      if (!oauth_token || !oauth_token_secret) {
-        throw new Error('Twitter authentication required. Please login first.')
+      // Get the LinkedIn access token from cookies
+      const accessToken = Cookies.get('linkedin_oauth_access_token')
+      if (!accessToken) {
+        throw new Error('LinkedIn authentication required. Please login first.')
       }
 
-      console.log('Tokens from cookies:', { oauth_token, oauth_token_secret })
+      console.log('Access token from cookies:', accessToken)
 
-      const response = await fetch('http://localhost:5001/api/auth/twitter/Share-Video', {
+      const response = await fetch('http://localhost:5001/api/auth/linkedin/Share-Video', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
         },
         body: JSON.stringify({
           videoUrl,
-          oauth_token,
-          oauth_token_secret
+          title: 'Check out this amazing video!',
+          description: 'Sharing this awesome video to LinkedIn.'
         })
       })
-      console.log('Response:', response)
 
       const data = await response.json()
-      console.log('Data:', data)
+      console.log('Response:', data)
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to share video')
       }
 
-      setMessage('Video shared successfully!')
+      setMessage('Video shared successfully to LinkedIn!')
     } catch (err) {
       setError(err.message)
       console.error('Share error:', err)
@@ -58,7 +55,7 @@ const TwitterVideoShare = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-blue-400 mb-6 text-center">Share Video to Twitter</h2>
+      <h2 className="text-2xl font-bold text-blue-400 mb-6 text-center">Share Video to LinkedIn</h2>
 
       <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden mb-6">
         <video
@@ -86,7 +83,7 @@ const TwitterVideoShare = () => {
         disabled={isLoading}
       >
         <Share2 className="w-5 h-5" />
-        {isLoading ? 'Sharing...' : 'Share to Twitter'}
+        {isLoading ? 'Sharing...' : 'Share to LinkedIn'}
       </button>
 
       {message && <p className="mt-4 text-green-600 text-center">{message}</p>}
@@ -95,4 +92,4 @@ const TwitterVideoShare = () => {
   )
 }
 
-export default TwitterVideoShare
+export default LinkedInVideoShare

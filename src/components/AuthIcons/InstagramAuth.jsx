@@ -53,7 +53,7 @@ const InstagramAuth = () => {
         src={InstagramIcon}
         alt="Instagram Login"
         onClick={handleInstagramLogin}
-        className="cursor-pointer hover:opacity-50"
+        className="gap-3 flex flex-col cursor-pointer hover:opacity-50"
       />
       <PostButton />
       <PostStoryButton />

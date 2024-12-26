@@ -4,7 +4,12 @@ import JellyFishImage from '../../assests/images/c.png'
 import SettingsIcon from '../../assests/images/settings/setting.png'
 import SettingsBoldIcon from '../../assests/images/settings/settingbold.png'
 import InstagramAuth from '../AuthIcons/InstagramAuth'
-import PostButton from '../PostPublishButton'
+import LinkedInIcon from '../../assests/images/settings/LinkedIn_Icon.svg'
+import PinterestIcon from '../../assests/images/settings/Pinterest_Icon.svg'
+import SnapchatIcon from '../../assests/images/settings/snapchatIcon.svg'
+import TwitterIcon from '../../assests/images/settings/X_Icon.svg'
+import CalendarIcon from '../../assests/images/settings/CalendarIcon.svg'
+import { Link } from 'react-router-dom'
 const JellyFish = ({ isZoomed, setIsZoomed, isSettingsZoomed, setIsSettingsZoomed }) => {
   const [isHovered, setIsHovered] = useState(false)
 
@@ -81,6 +86,46 @@ const JellyFish = ({ isZoomed, setIsZoomed, isSettingsZoomed, setIsSettingsZoome
         }}
       >
         <InstagramAuth />
+        <Link to="/twitter-test">
+          <img
+            src={TwitterIcon}
+            alt="Twitter"
+            className="absolute top-23 left-0 w-12 h-12 z-30"
+            onClick={() => setIsSettingsZoomed(false)}
+          />
+        </Link>
+        <Link to="/linkedIn-test">
+          <img
+            src={LinkedInIcon}
+            alt="LinkedIn"
+            className="absolute top-17 left-14 w-12 h-12 z-30"
+            onClick={() => setIsSettingsZoomed(false)}
+          />
+        </Link>
+        <Link to="/pinterest-login">
+          <img
+            src={PinterestIcon}
+            alt="Pinterest"
+            className="absolute top-19 left-24 w-12 h-12 z-30"
+            onClick={() => setIsSettingsZoomed(false)}
+          />
+        </Link>
+        <Link to="/snapchat-login">
+          <img
+            src={SnapchatIcon}
+            alt="Snapchat"
+            className="absolute top-10 left-15 w-12 h-12 z-30"
+            onClick={() => setIsSettingsZoomed(false)}
+          />
+        </Link>
+        <Link to="/twitter-schedule">
+          <img
+            src={CalendarIcon}
+            alt="CalendarIcon"
+            className="absolute top-18 left-0 w-12 h-12 z-30"
+            onClick={() => setIsSettingsZoomed(false)}
+          />
+        </Link>
         <img
           src={JellyFishImage}
           alt="Jellyfish"

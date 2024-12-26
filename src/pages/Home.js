@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
-<<<<<<< HEAD
-=======
 import Header from '../components/Header'
 import SideBar from '../components/Home/SideBar'
->>>>>>> origin/develop
 import JellyVideo from '../assests/videos/videojelly.gif'
 import Rectangle from '../assests/images/rectangle.png'
 import Jellyfish1 from '../assests/images/jellyfish.png'
@@ -14,21 +11,13 @@ import whatsup from '../assests/images/icons/whatsup.png'
 import X from '../assests/images/icons/x.png'
 import Snapchat from '../assests/images/icons/snapchat.png'
 import FacebookIcon from '../assests/images/icons/facebook.png'
-<<<<<<< HEAD
 import Cross from '../assests/images/cross.png'
 import { Settings } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Navbar, SideBar, JellyFish } from '../components/index'
+
+import  JellyFish from '../components/Home/JellyFish'
 import SettingsForm from '../components/Setting/Setting'
 
-=======
-import JellyFish from '../components/Home/JellyFish'
-import Cross from '../assests/images/cross.png'
-import { Settings } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-
-import SettingsForm from '../components/Settings/Settings'
->>>>>>> origin/develop
 export default function Home() {
   const [isZoomed, setIsZoomed] = useState(false)
   const [isSettingsZoomed, setIsSettingsZoomed] = useState(false)
@@ -57,26 +46,15 @@ export default function Home() {
       {/* content */}
       <div className="relative z-10">
         <div className="pt-10">
-<<<<<<< HEAD
-          <Navbar />
-=======
           <Header />
->>>>>>> origin/develop
           {/* main content div */}
 
           {/* left screen */}
           {!isZoomed && !isSettingsZoomed && (
-<<<<<<< HEAD
             <div className="flex items-center justify-center flex-col absolute bottom-28 left-7 z-20">
               <img src={imageVideo} alt="Personne" className="  " />
 
               <div style={{ width: '350px', wordWrap: 'break-word' }} className=" text-center z-30">
-=======
-            <div className="flex  items-center justify-center flex-col w-60 m-4 absolute bottom-44 left-12 z-20">
-              <img src={imageVideo} alt="Personne" className=" cursor-pointer rounded-full " />
-
-              <div className=" text-center text-xs text-white z-30">
->>>>>>> origin/develop
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                 incididunt ut labore et dolore magna aliqua.
               </div>
@@ -95,7 +73,6 @@ export default function Home() {
                 <img src={Cross} alt="Close button" className="w-6 h-6" />
               </button>
             )}
-<<<<<<< HEAD
             {/*  cross button for settings  */}
             {/* {isSettingsZoomed && (
               <button
@@ -109,11 +86,6 @@ export default function Home() {
           </div>
           {/* end cross button */}
           <div className="bg-red-200">
-=======
-          </div>
-          {/* end cross button */}
-          <div className="w-[1100px] ">
->>>>>>> origin/develop
             <JellyFish
               isZoomed={isZoomed}
               setIsZoomed={setIsZoomed}
