@@ -1,6 +1,5 @@
 {
-  "homepage": "https://arij-gara.github.io/newbortoaana",
-  "name": "borto2ana",
+  "name": "bortoaana",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
