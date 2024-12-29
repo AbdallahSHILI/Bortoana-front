@@ -13,7 +13,7 @@ const InstagramAuth = () => {
 
     const windowFeatures = 'width=600,height=800,left=200,top=200'
     const newWindow = window.open(
-      'https://www.instagram.com/oauth/authorize?enable_fb_login=0&force_authentication=1&client_id=921275860068455&redirect_uri=https://98a5-102-30-101-130.ngrok-free.app/api/instagram/callback&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish',
+      'https://www.instagram.com/oauth/authorize?enable_fb_login=0&force_authentication=1&client_id=921275860068455&redirect_uri=https://bortoaana.onrender.com/api/instagram/callback&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish',
       'InstagramLogin',
       windowFeatures
     )
