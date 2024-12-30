@@ -103,14 +103,14 @@ const FacebookAuth = () => {
           Cookies.set('facebook_page_token', event.data.token, {
             expires: 1,
             secure: true,
-            sameSite: 'strict',
+            sameSite: 'None', // Match backend setting
             path: '/'
           })
 
           Cookies.set('facebook_page_id', event.data.pageId || event.data.token, {
             expires: 1,
             secure: true,
-            sameSite: 'strict',
+            sameSite: 'None', // Match backend setting
             path: '/'
           })
 
