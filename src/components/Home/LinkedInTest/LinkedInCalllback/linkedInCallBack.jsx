@@ -42,6 +42,7 @@ const LinkedInCallback = () => {
         console.log('LinkedIn Authentication successful:', response.data)
 
         Cookies.set('linkedin_oauth_access_token', response.data.accessToken, {
+          httpOnly: true,
           expires: 7,
           secure: true,
           sameSite: 'None',
