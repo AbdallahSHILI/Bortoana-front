@@ -3,8 +3,6 @@ import Video from '../../assests/videos/edit_test.mp4'
 import Thumbnail from '../../assests/images/inputs/Thumbnail.svg'
 import ReactPlayer from 'react-player'
 import React, { useState } from 'react'
-import Cookies from 'js-cookie'
-
 import {
   FaFacebookF,
   FaInstagram,
@@ -71,43 +69,6 @@ const ScheduleModal = ({ onClose }) => {
       alert('Error scheduling posts: ' + error.message)
     } finally {
       setIsPublishing(false)
-    }
-  }
-
-  const handleLinkedinShare = async (content) => {
-    console.log('Publishing to Linkedin:', content)
-
-    try {
-      // Get the LinkedIn access token from cookies
-      const accessToken = Cookies.get('linkedin_oauth_access_token')
-      if (!accessToken) {
-        throw new Error('LinkedIn authentication required. Please login first.')
-      }
-
-      console.log('Access token from cookies:', accessToken)
-
-      const response = await fetch('https://bortoaana.onrender.com/api/auth/linkedin/Share-Video', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({
-          videoUrl: content.videUrl,
-          title: content.title
-          // description: 'Sharing this awesome video to LinkedIn.'
-        })
-      })
-
-      const data = await response.json()
-      console.log('Response:', data)
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to share video')
-      }
-    } catch (err) {
-      console.error('Share error:', err)
-    } finally {
     }
   }
 
@@ -224,9 +185,7 @@ const ScheduleModal = ({ onClose }) => {
             <div className="flex justify-between">
               <p className="text-white ">Thumbnail</p>
               <div>
-                <button onClick={handleLinkedinShare} className="bg-red-500">
-                  Linkedintest
-                </button>
+                <button className="bg-red-500">Linkedintest</button>
               </div>
               <div className="flex gap-2 flex-row">
                 <RotateCcw className="text-gray-400 bg-[#1A1A1C] rounded-lg p-1" />
