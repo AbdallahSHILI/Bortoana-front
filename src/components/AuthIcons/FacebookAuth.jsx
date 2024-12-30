@@ -100,19 +100,19 @@ const FacebookAuth = () => {
           setToken(event.data.token)
 
           // Set cookies
-          Cookies.set('facebook_page_token', event.data.token, {
-            expires: 1,
-            secure: true,
-            sameSite: 'None', // Match backend setting
-            path: '/'
-          })
+          // Cookies.set('facebook_page_token', event.data.token, {
+          //   expires: 1,
+          //   secure: true,
+          //   sameSite: 'None', // Match backend setting
+          //   path: '/'
+          // })
 
-          Cookies.set('facebook_page_id', event.data.pageId || event.data.token, {
-            expires: 1,
-            secure: true,
-            sameSite: 'None', // Match backend setting
-            path: '/'
-          })
+          // Cookies.set('facebook_page_id', event.data.pageId || event.data.token, {
+          //   expires: 1,
+          //   secure: true,
+          //   sameSite: 'None', // Match backend setting
+          //   path: '/'
+          // })
 
           checkAuthStatus()
 
