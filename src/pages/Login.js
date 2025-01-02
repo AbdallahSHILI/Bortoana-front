@@ -52,19 +52,11 @@ function Login() {
 
   const handleGoogleLogin = async (e) => {
     e.preventDefault()
-    window.open('https://bortoaana.onrender.com/api/googleauth/auth/google', '_self')
-  }
-  // tiktok login
-
-  const handleTikTokLogin = async (e) => {
-    e.preventDefault()
-    try {
-      window.location.href = 'https://bortoaana.onrender.com/api/tiktok/login'
-      // window.location.href = response.data.url; // Redirect to TikTok login URL
-    } catch (error) {
-      console.error('TikTok login failed:', error.message)
-      setErrorMessage('Failed to initiate TikTok login')
-    }
+    const baseUrl =
+      process.env.NODE_ENV === 'production'
+        ? 'https://bortoaana.vercel.app'
+        : 'http://localhost:5001'
+    window.open(`${baseUrl}/api/googleauth/auth/google`, '_self')
   }
   return (
     <div className="h-screen w-screen bg-gray-900     flex items-center justify-center">
@@ -131,7 +123,7 @@ function Login() {
             login with Google
           </button>
           <button
-            onClick={handleTikTokLogin}
+            // onClick={handleTikTokLogin}
             className="bg-white mt-5 text-black py-2 px-4 rounded w-full hover:bg-gray-200 transition"
           >
             Login with TikTok
