@@ -1,12 +1,20 @@
 import { Outlet, Navigate, useLocation } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import Cookies from 'js-cookie'
 
-const ProtectedRoutes = () => {
+const ProtectedRoutes = ({ children }) => {
+  console.log('ProtectedRoutes mounting') // Basic mount check
   const location = useLocation()
   const { user } = useAuth()
-  const isLoggedIn = window.localStorage.getItem('isLoggedIn') === 'true'
-  console.log('user:', user)
-  return isLoggedIn ? <Outlet /> : <Navigate to="/" state={{ from: location }} replace />
+
+  const googleToken = Cookies.get('google_token')
+  console.log('Initial render, token:', googleToken)
+
+  return googleToken ? (
+    children || <Outlet />
+  ) : (
+    <Navigate to="/" state={{ from: location }} replace />
+  )
 }
 
 export default ProtectedRoutes

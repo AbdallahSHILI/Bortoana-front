@@ -3,7 +3,7 @@ import LoginPage from '../src/pages/Login'
 import HomePage from './pages/Home'
 import ProtectedRoutes from './utils/protectedRoutes'
 import { AuthContext } from './context/authContext'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import TwitterTest from './components/Home/TwitterTest/twitterTest'
 import TwitterCallback from './components/Home/TwitterTest/TwitterCallBack/twitterCallBack'
 // import TwitterShare from './components/Home/TwitterTest/TwitterVideoShare'
@@ -11,29 +11,63 @@ import LinkedInTest from './components/Home/LinkedInTest/linkedInTest'
 import LinkedInCallback from './components/Home/LinkedInTest/LinkedInCalllback/linkedInCallBack'
 import backgroundImage from './assests/images/background.png'
 import VideoEditor from './pages/VideoEdit'
-
-const router = createBrowserRouter(
-  [
-    { path: '/', element: <LoginPage /> },
-    { path: '/callback/twitter', element: <TwitterCallback /> },
-    { path: '/twitter-test', element: <TwitterTest /> },
-    // { path: '/twitter-share', element: <TwitterShare /> },
-    { path: '/linkedIn-test', element: <LinkedInTest /> },
-    { path: '/linkedIn/callback', element: <LinkedInCallback /> },
-    { path: '/edit', element: <VideoEditor /> },
-    {
-      element: <ProtectedRoutes />,
-      children: [{ path: '/home', element: <HomePage /> }]
-    }
-  ],
-  {
-    basename: '/newbortoaana'
-  }
-)
+import Cookies from 'js-cookie'
 
 const App = () => {
   const [user, setUser] = useState('')
   const [token, setToken] = useState('')
+  const isAuthenticated = !!Cookies.get('google_token')
+  const router = createBrowserRouter(
+    [
+      {
+        path: '/',
+        element: isAuthenticated ? <Navigate to="/home" /> : <LoginPage />
+      },
+      {
+        path: '/callback/twitter',
+        element: <TwitterCallback />
+      },
+      {
+        path: '/linkedIn/callback',
+        element: <LinkedInCallback />
+      },
+      {
+        path: '/home',
+        element: (
+          <ProtectedRoutes>
+            <HomePage />
+          </ProtectedRoutes>
+        )
+      },
+      {
+        path: '/twitter-test',
+        element: (
+          <ProtectedRoutes>
+            <TwitterTest />
+          </ProtectedRoutes>
+        )
+      },
+      {
+        path: '/linkedIn-test',
+        element: (
+          <ProtectedRoutes>
+            <LinkedInTest />
+          </ProtectedRoutes>
+        )
+      },
+      {
+        path: '/edit',
+        element: (
+          <ProtectedRoutes>
+            <VideoEditor />
+          </ProtectedRoutes>
+        )
+      }
+    ],
+    {
+      basename: '/newbortoaana'
+    }
+  )
   // // const [isMobile, setIsMobile] = useState(false)
 
   // useEffect(() => {

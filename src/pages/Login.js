@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import videoSource from '../assests/videos/animation.mp4'
 import axios from 'axios'
 import { Spinner } from '../components/Spinner'
@@ -50,13 +50,36 @@ function Login() {
   //   window.location.href = 'https://bortoaana.onrender.com/api/facebook/'
   // }
 
-  const handleGoogleLogin = async (e) => {
+  // Function to get token from URL and save as cookie
+
+  const handleGoogleLogin = (e) => {
     e.preventDefault()
     const baseUrl =
       process.env.NODE_ENV === 'production'
-        ? 'https://bortoaana.vercel.app'
+        ? 'https://bortoaana.onrender.com'
         : 'http://localhost:5001'
-    window.open(`${baseUrl}/api/googleauth/auth/google`, '_self')
+
+    // Calculate center position for popup
+    const width = 500
+    const height = 600
+    const left = window.screenX + (window.outerWidth - width) / 2
+    const top = window.screenY + (window.outerHeight - height) / 2
+
+    // Open popup
+    const popup = window.open(
+      `${baseUrl}/api/googleauth/auth/google`,
+      'Google Login',
+      `width=${width},height=${height},left=${left},top=${top}`
+    )
+
+    // Check periodically if the popup has been closed
+    const pollTimer = setInterval(() => {
+      const token = Cookies.get('google_token')
+      if (popup.closed && token) {
+        clearInterval(pollTimer)
+        window.location.replace('/newbortoaana/home')
+      }
+    }, 500)
   }
   return (
     <div className="h-screen w-screen bg-gray-900     flex items-center justify-center">
