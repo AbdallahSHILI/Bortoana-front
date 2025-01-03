@@ -72,15 +72,38 @@ function Login() {
       `width=${width},height=${height},left=${left},top=${top}`
     )
 
+    // Event listener for postMessage from popup
+    const handleMessage = (event) => {
+      if (event.origin !== baseUrl) {
+        console.warn('Origin mismatch: Ignoring message from unknown origin.')
+        return
+      }
+
+      const { google_token, userId } = event.data
+      if (google_token && userId) {
+        console.log('Received token and userId:', { google_token, userId })
+
+        // Save the token and userId (cookies, local storage, or app state)
+        Cookies.set('google_token', google_token, { secure: true, sameSite: 'None' })
+        Cookies.set('userId', userId, { secure: true, sameSite: 'None' })
+
+        // Redirect or perform further actions
+        window.location.replace('/newbortoaana/home')
+      }
+    }
+
+    // Add listener to receive messages
+    window.addEventListener('message', handleMessage)
+
     // Check periodically if the popup has been closed
     const pollTimer = setInterval(() => {
-      const token = Cookies.get('google_token')
-      if (popup.closed && token) {
+      if (popup && popup.closed) {
         clearInterval(pollTimer)
-        window.location.replace('/newbortoaana/home')
+        window.removeEventListener('message', handleMessage)
       }
     }, 500)
   }
+
   return (
     <div className="h-screen w-screen bg-gray-900     flex items-center justify-center">
       <video
