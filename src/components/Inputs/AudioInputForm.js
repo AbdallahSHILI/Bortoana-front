@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import AudioText from '../../assests/images/inputs/audiotext.png'
-import AudioImage from '../../assests/images/inputs/audioimage.png'
+import AudioImage from '../../assests/images/settings/Audio-Pic.svg'
 import isListeningImage from '../../assests/images/inputs/isListening.png'
 import StopListeningImage from '../../assests/images/inputs/stopListening.png'
 import TranscriptComponent from './TranscriptComponent'

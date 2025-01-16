@@ -65,7 +65,7 @@ const FacebookAuth = () => {
       sessionStorage.setItem('facebook_auth_state', state)
 
       // Open the popup with the state parameter
-      const loginUrl = `${baseUrl}/api/facebook/login?state=${state}&redirect_uri=${encodeURIComponent(FRONTEND_ORIGIN)}`
+      const loginUrl = `${ALLOWED_ORIGIN}/api/facebook/login?state=${state}&redirect_uri=${encodeURIComponent(FRONTEND_ORIGIN)}`
       window.open(loginUrl, 'FacebookLogin', featuresString)
     } catch (error) {
       console.error('Login error:', error)
