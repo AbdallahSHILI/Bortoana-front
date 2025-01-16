@@ -12,6 +12,8 @@ const tokenStore = new Map()
 
 exports.LoginTwitter = async (req, res, next) => {
   try {
+
+    console.log('LoginTwitter')
     // Create OAuth 1.0 consumer
     const oauth1Client = new oauth.OAuth(
       'https://api.twitter.com/oauth/request_token',
@@ -22,6 +24,7 @@ exports.LoginTwitter = async (req, res, next) => {
       'https://bortoaana.vercel.app/newbortoaana/callback/twitter', // Replace with your callback URL
       'HMAC-SHA1'
     )
+
 
     // Get request token
     oauth1Client.getOAuthRequestToken((error, oauth_token, oauth_token_secret, results) => {

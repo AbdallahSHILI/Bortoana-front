@@ -1,120 +1,139 @@
-import React, { useState, useEffect } from 'react'
-import AudioImage from '../../assests/images/inputs/audiotext.png'
-import { FaRedo, FaEdit, FaSave } from 'react-icons/fa'
-import Propreties from './Propreties'
-import { ArrowLeftIcon } from 'lucide-react'
+import React, { useState } from 'react';
+import { FaRedo, FaEdit, FaSave } from 'react-icons/fa';
+import Propreties from './Propreties';
+import { ArrowLeftIcon } from 'lucide-react';
+import AudioPic from "../../assests/images/settings/Audio-Pic.svg"
+import RecordVoiceModal from '../../Modal/RecordVoice/recordVoice';
 
-function TranscriptComponent({ transcript, onRecordAgain, onClose }) {
-  const [showProperties, setShowProperties] = useState(false)
-  const [isEditing, setIsEditing] = useState(false)
-  const [editedTranscript, setEditedTranscript] = useState(transcript)
+const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
+  const [showRecordModal, setShowRecordModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTranscript, setEditedTranscript] = useState(transcript || '');
+  const [showProperties, setShowProperties] = useState(false);
 
-  const handleProceed = (e) => {
-    e.stopPropagation()
-    setShowProperties(true)
-  }
+  const handleProceed = () => {
+    setShowProperties(true);
+  };
+
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    setIsEditing(true);
+  };
+
+  const handleSaveClick = (e) => {
+    e.stopPropagation();
+    setIsEditing(false);
+  };
+
+  const handleTranscriptChange = (e) => {
+    setEditedTranscript(e.target.value);
+  };
+
+  const handleRecordAgain = () => {
+    setShowRecordModal(true);
+  };
+
+  const handleSaveRecording = (recordingData) => {
+    if (recordingData.transcribedText) {
+      setEditedTranscript(prevTranscript => {
+        const separator = prevTranscript ? '\n' : '';
+        return prevTranscript + separator + recordingData.transcribedText;
+      });
+    }
+    setShowRecordModal(false);
+  };
 
   if (showProperties) {
-    return <Propreties />
-  }
-  const handleEditClick = (e) => {
-    e.stopPropagation()
-    setIsEditing(true)
-  }
-  const handleSaveClick = (e) => {
-    e.stopPropagation()
-    setIsEditing(false)
-    console.log('hiii')
-  }
-  const handleTranscriptChange = (e) => {
-    setEditedTranscript(e.target.value)
-  }
-  const handelclickedit = (e) => {
-    e.stopPropagation()
+    return <Propreties />;
   }
 
   return (
-    <div className=" ml-16 w-full flex-col  ">
-      {/* form  */}
-
-      {/* left side */}
-      <div className="">
-        <div className=" ">
-          <img alt="audioimage" src={AudioImage} className="w-[250px]  " />
-        </div>
+    <div className="ml-16 w-full flex-col">
+      <div>
+        <img 
+          alt="audio visualization" 
+          src={AudioPic}
+          className="w-[250px]" 
+        />
       </div>
-      {/* right side */}
-      <div className=" flex flex-row gap-16 ">
-        {/* buttons */}
-        <div
-          onClick={() => onClose()}
+
+      <div className="flex flex-row gap-16">
+        <button
+          onClick={onClose}
           className="mt-5 top-0 bg-white w-[35px] h-[35px] cursor-pointer rounded-full flex items-center justify-center"
         >
-          <ArrowLeftIcon className="w-4  h-5 text-gray-700" />
-        </div>
-        <div
-          style={{ backgroundColor: '#7090B033' }}
-          className=" w-[530px]  h-[190px] rounded-lg p-3  "
-        >
-          <div className="flex flex-row  justify-between">
+          <ArrowLeftIcon className="w-4 h-5 text-gray-700" />
+        </button>
+
+        <div className="w-[530px] h-[190px] rounded-lg p-3 bg-[#7090B033]">
+          <div className="flex flex-row justify-between">
             <div>
-              <div className="text-white text-xs">Record Borto2ana :</div>
+              <div className="text-white text-xs">Record Bortoana :</div>
               <div className="text-xs text-gray-600">13/09/2023</div>
             </div>
-            <div
-              onClick={onRecordAgain}
-              className="flex flex-row space-x-2 justify-center items-center"
-            >
-              <div className="w-[80px] h-[15px] bg-slate-950 text-[8px] rounded-sm text-gray-600 flex justify-center items-center cursor-pointer">
+            
+            <div className="flex flex-row space-x-2 justify-center items-center">
+              <button
+                onClick={handleRecordAgain}
+                className="w-[80px] h-[15px] bg-slate-950 text-[8px] rounded-sm text-gray-600 flex justify-center items-center cursor-pointer hover:bg-slate-900"
+              >
                 <FaRedo className="mr-1" />
                 Record Again
-              </div>
-              <div
-                onClick={(e) => handleEditClick(e)}
-                className="w-[60px] h-[15px] bg-slate-950 text-[8px] rounded-sm text-gray-600 flex justify-center items-center cursor-pointer"
+              </button>
+              
+              <button
+                onClick={handleEditClick}
+                className="w-[60px] h-[15px] bg-slate-950 text-[8px] rounded-sm text-gray-600 flex justify-center items-center cursor-pointer hover:bg-slate-900"
               >
-                <FaEdit className="mr-1 cursor-pointer" />
-                <div className="cursor-pointer">Edit Text</div>
-              </div>
+                <FaEdit className="mr-1" />
+                Edit Text
+              </button>
             </div>
           </div>
 
-          {/* Transcript text or input */}
           <div className="text-white text-xs mt-2">
             {isEditing ? (
-              <div className="flex items-center space-x-2">
-                <input
-                  type="text"
+              <div className="flex flex-col space-y-2">
+                <textarea
                   value={editedTranscript}
                   onChange={handleTranscriptChange}
-                  onClick={(e) => handelclickedit(e)}
-                  className="text-white text-xs w-full rounded-sm px-2 py-1 bg-gray-800"
+                  className="text-white text-xs w-full rounded-sm px-2 py-1 bg-gray-800 min-h-[80px] resize-none"
                 />
-                <button
-                  onClick={(e) => handleSaveClick(e)}
-                  className=" cursor-pointer text-white bg-blue-500 text-xs rounded-sm px-2 py-1  z-50 "
-                >
-                  <FaSave className="mr-1" />
-                </button>
+                <div className="flex justify-start">
+                  <button
+                    onClick={handleSaveClick}
+                    className="cursor-pointer text-white bg-blue-500 text-xs rounded-sm px-3 py-1 flex items-center gap-1"
+                  >
+                    <FaSave className="w-3 h-3" />
+                    Save
+                  </button>
+                </div>
               </div>
             ) : (
-              <span>{editedTranscript}</span>
+              <div className="whitespace-pre-wrap">{editedTranscript}</div>
             )}
           </div>
-          <div></div>
         </div>
       </div>
-      {/* button Proceed */}
 
-      <div onClick={handleProceed} className="ml-24">
+      <div className="ml-24">
         <button
-          style={{ backgroundColor: '#0004FF' }}
-          className="text-white text-xs  w-[100px] h-[35px]  rounded-sm mt-2"
+          onClick={handleProceed}
+          className="text-white text-xs w-[100px] h-[35px] rounded-sm mt-2 bg-[#0004FF]"
         >
           Proceed
         </button>
       </div>
+
+      {showRecordModal && (
+        <RecordVoiceModal
+          isOpen={showRecordModal}
+          onClose={() => setShowRecordModal(false)}
+          onSave={handleSaveRecording}
+        />
+      )}
     </div>
-  )
-}
-export default TranscriptComponent
+  );
+};
+
+export default TranscriptComponent;

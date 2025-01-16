@@ -85,7 +85,7 @@ export const handleLinkedinShare = async (content) => {
 
     console.log('Access token from cookies:', accessToken)
 
-    const response = await fetch('https://bortoaana.onrender.com/api/auth/linkedin/Share-Video', {
+    const response = await fetch('http://localhost:5001/api/auth/linkedin/Share-Video', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ export const handleTwitterShare = async (content) => {
     formData.append('oauth_token', oauth_token)
     formData.append('oauth_token_secret', oauth_token_secret)
 
-    const response = await fetch('https://bortoaana.onrender.com/api/auth/twitter/Share-Video', {
+    const response = await fetch('http://localhost:5001/api/auth/twitter/Share-Video', {
       method: 'POST',
       // Don't set Content-Type header - let the browser set it with the boundary
       body: formData
@@ -212,7 +212,10 @@ export const publishToSelectedPlatforms = async (selected, content) => {
 
 const schedulePost = async (platform, content) => {
   try {
-    const response = await fetch(`https://bortoaana.onrender.com/api/user/schedule`, {
+
+    const userId = Cookies.get('userId');
+
+    const response = await fetch(`http://localhost:5001/api/user/schedule`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -220,7 +223,8 @@ const schedulePost = async (platform, content) => {
       body: JSON.stringify({
         platform,
         content,
-        scheduledTime: content.scheduledTime
+        scheduledTime: content.scheduledTime,
+        userId 
       }),
       credentials: 'include' // Ensure cookies are sent with the request
     })

@@ -24,7 +24,11 @@ const LinkedInCallback = () => {
 
       const code = params.get('code')
       const state = params.get('state')
+      console.log('code', code)
+      console.log('state', state)
       const storedState = sessionStorage.getItem('linkedinState')
+      console.log('storedState', storedState)
+      
 
       // Validation
       if (!code || !state) {
@@ -33,9 +37,10 @@ const LinkedInCallback = () => {
       }
 
       try {
+        console.log('LinkedIn Authentication beggin')
         // Make request to your backend LinkedIn callback endpoint
         const response = await axios.get(
-          `https://bortoaana.onrender.com/api/auth/linkedin/Callback?code=${code}&state=${state}`,
+          `http://localhost:5001/api/auth/linkedin/Callback?code=${code}&state=${state}`,
           { withCredentials: true }
         )
         console.log('response', response)

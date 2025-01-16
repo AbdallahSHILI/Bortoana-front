@@ -37,7 +37,10 @@ const NichGenerator = ({ onClose }) => {
   useEffect(() => {
     const handleGetNich = async () => {
       try {
-        const response = await axios.get(`https://bortoaana.onrender.com/api/user/getnich/${id}`)
+        const response = await axios.get(
+          `https://bortoaana.onrender.com/api/user/getnich/${id}`,
+          { withCredentials: true }
+        );
         setExistingNich(response.data.nich)
         console.log('resopons', response)
       } catch (error) {

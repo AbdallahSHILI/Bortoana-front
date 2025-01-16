@@ -9,6 +9,13 @@ const XAuth = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [token, setToken] = useState(null)
   const [Secrettoken, setSecretToken] = useState(null)
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const checkAuthStatus = () => {
     const OauthToken = Cookies.get('twitter_oauth_token')
@@ -29,9 +36,11 @@ const XAuth = () => {
     const intervalId = setInterval(checkAuthStatus, 1000)
     return () => clearInterval(intervalId)
   }, [])
+
+  
   const handleTwitterLogin = async () => {
     try {
-      const response = await axios.post('https://bortoaana.onrender.com/api/auth/twitter/Login')
+      const response = await axios.post('http://localhost:5001/api/auth/twitter/Login')
       const data = response.data
 
       if (data.url) {
@@ -75,8 +84,22 @@ const XAuth = () => {
     }
   }
 
+  const getRightPosition = (width) => {
+    if (width >= 1600) {
+      return '46%'; // Adjust this value for 1600px screens
+    } else if (width >= 1540) {
+      return '48%'; // Adjust this value for 1540px screens
+    } else {
+      return '46%'; // Default for smaller screens
+    }
+  };
+
+
+  const rightPositionMyScreen = getRightPosition(screenWidth);
+
+
   return (
-    <div className="absolute right-[43%] top-[30%] z-[500]">
+    <div style={{ position: 'absolute', right: rightPositionMyScreen, top: '30%', zIndex: 500 }}>
       {!token ? (
         <Tooltip placement="top" title="x Login">
           <img

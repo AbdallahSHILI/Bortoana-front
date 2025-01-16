@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import videoSource from '../assests/videos/animation.mp4'
 import axios from 'axios'
 import { Spinner } from '../components/Spinner'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import Cookies from 'js-cookie'
+import { Link } from 'react-router-dom'
+import { useStats } from '../context/statsContext'
 
 function Login() {
   const { setUser, setToken } = useAuth()
@@ -13,23 +15,29 @@ function Login() {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const { refreshStats } = useStats()
 
   const handleLogin = async (e) => {
     e.preventDefault() // Prevent the default form submission
     setLoading(true)
     try {
-      const response = await axios.post('https://bortoaana.onrender.com/api/user/login', {
+      const response = await axios.post('http://localhost:5001/api/user/login', {
         email,
         password
       })
       console.log('Login successful:', response)
       Cookies.set('userId', response.data.user.id)
+      Cookies.set('google_token', response.data.token)
       setUser(response.data.user)
       setToken(response.data.token)
       console.log('response.data.user:', response.data.user)
       console.log('response.data.token:', response.data.token)
       window.localStorage.setItem('token', response.data.token)
       window.localStorage.setItem('isLoggedIn', true)
+
+            // Refresh stats after successful login
+      await refreshStats();
+
       navigate('/home')
     } catch (error) {
       if (error.response) {
@@ -44,68 +52,51 @@ function Login() {
     }
   }
 
-  // const handleFacebookLogin = async (e) => {
-  //   e.preventDefault()
-  //   console.log('hello')
-  //   window.location.href = 'https://bortoaana.onrender.com/api/facebook/'
-  // }
-
   // Function to get token from URL and save as cookie
+  const popupRef = useRef(null)
+  useEffect(() => {
+    // Check for cookies every second
+    const checkCookies = setInterval(() => {
+      const googleToken = Cookies.get('google_token')
+      const userId = Cookies.get('userId')
 
-  const handleGoogleLogin = (e) => {
-    e.preventDefault()
+      if (googleToken && userId) {
+        clearInterval(checkCookies)
+        navigate('/home')
+      }
+    }, 1000)
+
+    // Cleanup
+    return () => clearInterval(checkCookies)
+  }, [navigate])
+
+
+  const handleGoogleLogin = () => {
     const baseUrl =
       process.env.NODE_ENV === 'production'
         ? 'https://bortoaana.onrender.com'
         : 'http://localhost:5001'
 
-    // Calculate center position for popup
     const width = 500
     const height = 600
     const left = window.screenX + (window.outerWidth - width) / 2
     const top = window.screenY + (window.outerHeight - height) / 2
 
-    // Open popup
-    const popup = window.open(
+    // Close existing popup if it exists
+    if (popupRef.current) {
+      popupRef.current.close()
+    }
+
+    // Open new popup
+    popupRef.current = window.open(
       `${baseUrl}/api/googleauth/auth/google`,
       'Google Login',
       `width=${width},height=${height},left=${left},top=${top}`
     )
-
-    // Event listener for postMessage from popup
-    const handleMessage = (event) => {
-      if (event.origin !== baseUrl) {
-        console.warn('Origin mismatch: Ignoring message from unknown origin.')
-        return
-      }
-
-      const { google_token, userId } = event.data
-      if (google_token && userId) {
-        console.log('Received token and userId:', { google_token, userId })
-
-        // Save the token and userId (cookies, local storage, or app state)
-        Cookies.set('google_token', google_token, { secure: true, sameSite: 'None' })
-        Cookies.set('userId', userId, { secure: true, sameSite: 'None' })
-
-        // Redirect or perform further actions
-        window.location.replace('/newbortoaana/home')
-      }
-    }
-
-    // Add listener to receive messages
-    window.addEventListener('message', handleMessage)
-
-    // Check periodically if the popup has been closed
-    const pollTimer = setInterval(() => {
-      if (popup && popup.closed) {
-        clearInterval(pollTimer)
-        window.removeEventListener('message', handleMessage)
-      }
-    }, 500)
   }
 
   return (
-    <div className="h-screen w-screen bg-gray-900     flex items-center justify-center">
+    <div className="h-screen w-screen bg-gray-900 flex items-center justify-center">
       <video
         className="absolute top-0 left-0 w-full h-full object-cover"
         autoPlay
@@ -114,20 +105,18 @@ function Login() {
         src={videoSource}
         type="video/mp4"
       />
-      <div className="bg-[#111111]/50 relative overflow-hidden  w-[487px] h-[590px] flex flex-col items-center justify-center p-6 rounded-lg shadow-lg z-10 m-4 sm:my-2 sm:mx-2">
+      <div className="bg-[#111111]/50 relative overflow-hidden w-[487px] h-[590px] flex flex-col items-center justify-center p-6 rounded-lg shadow-lg z-10 m-4 sm:my-2 sm:mx-2">
         <div className="absolute z-[1] w-full h-full backdrop-blur-xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2" />
         <div className="z-[2]">
           <h1 className="text-white text-xl mb-3">It's great to see you again!</h1>
-          <h5 className="text-white mb-9 text-xs  sm:text-base">
-            {' '}
-            Welcome back !we're delighted to have you with us again !
+          <h5 className="text-white mb-9 text-xs sm:text-base">
+            Welcome back! We're delighted to have you with us again!
           </h5>
           {errorMessage && (
             <div className="bg-red-500 text-white p-2 rounded mb-4">{errorMessage}</div>
           )}
           <div className="w-full mb-4">
-            <label className="text-white  block mb-1">Email Address</label>
-
+            <label className="text-white block mb-1">Email Address</label>
             <input
               type="email"
               placeholder="Email Address"
@@ -138,7 +127,7 @@ function Login() {
           </div>
 
           <div className="w-full mb-4">
-            <label className="text-white  block mb-1">Password</label>
+            <label className="text-white block mb-1">Password</label>
             <input
               type="password"
               placeholder="Password"
@@ -148,9 +137,13 @@ function Login() {
             />
           </div>
           <div className="w-full mb-4 flex justify-end">
-            <a href="/#" className="text-blue-400 hover:underline">
+          <Link 
+  to="/forgot-password" 
+  state={{ source: 'login' }} 
+  className="text-blue-400 hover:underline"
+>
               Forgot your password?
-            </a>
+            </Link>
           </div>
 
           <button
@@ -159,25 +152,22 @@ function Login() {
           >
             {loading ? <Spinner /> : 'Login'}
           </button>
-          {/* <button    onClick={handleFacebookLogin} className="bg-white mt-5 text-black py-2 px-4 rounded w-full hover:bg-gray-200 transition">
-          login with facebook
-        </button> */}
           <button
             onClick={handleGoogleLogin}
             className="bg-white mt-5 text-black py-2 px-4 rounded w-full hover:bg-gray-200 transition"
           >
-            login with Google
+            Continue with Google
           </button>
-          <button
-            // onClick={handleTikTokLogin}
-            className="bg-white mt-5 text-black py-2 px-4 rounded w-full hover:bg-gray-200 transition"
+          <Link 
+            to="/Signup" 
+            className="bg-white mt-5 text-black py-2 px-4 rounded w-full hover:bg-gray-200 transition block text-center"
           >
-            Login with TikTok
-          </button>
+            Signup with Email
+          </Link>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

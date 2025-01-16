@@ -20,6 +20,8 @@ import { FaRegCalendar, FaRegClock } from 'react-icons/fa'
 import { FaXTwitter, FaSnapchat } from 'react-icons/fa6'
 import { PencilLine, RotateCcw } from 'lucide-react'
 import { publishToSelectedPlatforms } from '../../utils/SocialMediaFunctions'
+
+
 const ScheduleModal = ({ onClose }) => {
   const [selected, setSelected] = useState([])
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -140,12 +142,6 @@ const ScheduleModal = ({ onClose }) => {
       icon: FaTelegramPlane,
       selectedBg: 'bg-[#26A5E4]'
     },
-    {
-      id: 'more',
-      label: 'More',
-      icon: FaPlus,
-      selectedBg: 'bg-gray-600'
-    }
   ]
 
   const toggleSelect = (id) => {
@@ -184,9 +180,6 @@ const ScheduleModal = ({ onClose }) => {
             </div>{' '}
             <div className="flex justify-between">
               <p className="text-white ">Thumbnail</p>
-              <div>
-                <button className="bg-red-500">Linkedintest</button>
-              </div>
               <div className="flex gap-2 flex-row">
                 <RotateCcw className="text-gray-400 bg-[#1A1A1C] rounded-lg p-1" />
                 <PencilLine className="text-gray-400 bg-[#1A1A1C] rounded-lg p-1" />

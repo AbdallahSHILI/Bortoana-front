@@ -25,6 +25,7 @@ const HashtagModal = ({
         const response = await axios.post('http://localhost:5000/generate_hashtags', {
           nich: existingNich
         })
+        console.log('Hashtags generated successfully:', response.data)
         setHashtags(response.data.hashtags || [])
       } catch (error) {
         console.error('Error fetching hashtags:', error)

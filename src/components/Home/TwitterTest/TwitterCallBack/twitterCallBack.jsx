@@ -17,7 +17,7 @@ const TwitterCallback = () => {
     if (oauth_token && oauth_verifier) {
       axios
         .get(
-          `https://bortoaana.onrender.com/api/auth/twitter/Callback?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`
+          `http://localhost:5001/api/auth/twitter/Callback?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`
         )
         .then((response) => {
           console.log('token', response.data.data.oauth_token)
@@ -27,11 +27,10 @@ const TwitterCallback = () => {
           Cookies.set('twitter_oauth_token_secret', response.data.data.oauth_token_secret, {
             expires: 7
           })
-          console.log(response.data.data.user)
-
-          // Use user info directly from the callback response
-          const userData = response.data.data.user
-          console.log(userData)
+          
+          // Extract user data from the nested structure
+          const userData = response.data.data.user.data
+          console.log("User Data:", userData)
           setUserInfo(userData)
         })
         .catch((error) => {
@@ -75,10 +74,13 @@ const TwitterCallback = () => {
     )
   }
 
+  // Access specific properties from userInfo object
+  const userName = userInfo.name || userInfo.username || 'User'
+
   return (
     <div className={styles.container}>
       <h2 className={styles.successTitle}>Authentication Successful! 👋</h2>
-      <p className={styles.welcomeMessage}>Welcome, {userInfo || 'User'}!</p>
+      <p className={styles.welcomeMessage}>Welcome, {userName}!</p>
       <p className={styles.closeMessage}>You will be redirected shortly...</p>
     </div>
   )

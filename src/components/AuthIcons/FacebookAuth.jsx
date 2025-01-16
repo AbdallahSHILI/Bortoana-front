@@ -7,6 +7,7 @@ import Cookies from 'js-cookie'
 const FacebookAuth = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [token, setToken] = useState(null)
+  const baseUrl = process.env.NODE_ENV == 'production' ? 'ttps://bortoaana.onrender.com' : 'http://localhost:5001'
 
   // Ensure this matches your backend origin exactly
   const ALLOWED_ORIGIN = 'https://bortoaana.onrender.com'
@@ -64,7 +65,7 @@ const FacebookAuth = () => {
       sessionStorage.setItem('facebook_auth_state', state)
 
       // Open the popup with the state parameter
-      const loginUrl = `${ALLOWED_ORIGIN}/api/facebook/login?state=${state}&redirect_uri=${encodeURIComponent(FRONTEND_ORIGIN)}`
+      const loginUrl = `${baseUrl}/api/facebook/login?state=${state}&redirect_uri=${encodeURIComponent(FRONTEND_ORIGIN)}`
       window.open(loginUrl, 'FacebookLogin', featuresString)
     } catch (error) {
       console.error('Login error:', error)

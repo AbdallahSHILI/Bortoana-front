@@ -12,11 +12,17 @@ import LinkedInCallback from './components/Home/LinkedInTest/LinkedInCalllback/l
 import backgroundImage from './assests/images/background.png'
 import VideoEditor from './pages/VideoEdit'
 import Cookies from 'js-cookie'
+import ProfileModal from './Modal/ProfileModal/profileModal'
+import SignupGoogle from './pages/SignupGoogle'
+import { ForgotPassword, ResetPassword } from './pages/ForgetPassword'
+import { StatsProvider } from './context/statsContext'
 
 const App = () => {
   const [user, setUser] = useState('')
   const [token, setToken] = useState('')
   const isAuthenticated = !!Cookies.get('google_token')
+
+  console.log(isAuthenticated)
   const router = createBrowserRouter(
     [
       {
@@ -27,9 +33,17 @@ const App = () => {
         path: '/callback/twitter',
         element: <TwitterCallback />
       },
+{
+  path: '/forgot-password',
+  element: <ForgotPassword />
+},
       {
-        path: '/linkedIn/callback',
-        element: <LinkedInCallback />
+        path: '/reset-password/:token',
+        element: <ResetPassword />
+      },
+      {
+        path: '/Signup',
+        element: <SignupGoogle />
       },
       {
         path: '/home',
@@ -38,7 +52,7 @@ const App = () => {
             <HomePage />
           </ProtectedRoutes>
         )
-      },
+      },   
       {
         path: '/twitter-test',
         element: (
@@ -56,6 +70,10 @@ const App = () => {
         )
       },
       {
+        path: '/linkedin/callback',
+        element: <LinkedInCallback />
+      },
+      {
         path: '/edit',
         element: (
           <ProtectedRoutes>
@@ -68,21 +86,7 @@ const App = () => {
       basename: '/newbortoaana'
     }
   )
-  // // const [isMobile, setIsMobile] = useState(false)
 
-  // useEffect(() => {
-  //   const checkScreenSize = () => {
-  //     setIsMobile(window.innerWidth < 1300)
-  //   }
-
-  //   checkScreenSize()
-
-  //   window.addEventListener('resize', checkScreenSize)
-
-  //   return () => {
-  //     window.removeEventListener('resize', checkScreenSize)
-  //   }
-  // }, [])
 
   return (
     <div
@@ -90,18 +94,9 @@ const App = () => {
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <AuthContext.Provider value={{ user, setUser, token, setToken }}>
-        {/* {isMobile ? ( */}
-        {/* <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg">
-            <h2 className="text-center text-xl font-semibold">This app is only available on PC</h2>
-            <p className="text-center mt-2">
-              Please use a laptop or desktop to access the full app.
-            </p>
-          </div>
-        </div> */}
-        {/* ) : ( */}
+      <StatsProvider>
         <RouterProvider router={router} />
-        {/* )} */}
+        </StatsProvider>
       </AuthContext.Provider>
     </div>
   )

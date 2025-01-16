@@ -1,0 +1,79 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(31, 31, 31, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+  
+.modalContent {
+    background-color: #303030;
+    padding: 3rem;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 40%;
+    height: 3rem;
+    min-height: 370px;
+    border: 7px solid #4B4B4B;
+    justify-content: center;
+    gap: 0.5rem;
+}
+  
+.modalIcon {
+    margin-bottom: 1rem;
+    object-fit: contain;
+}
+
+.errorIcon {
+    width: 130px;
+    height: 130px;
+}
+
+.successIcon {
+    width: 200px;
+    height: 200px;
+}
+  
+.title {
+    color: white;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+  
+.message {
+    color: #B7B7B7;
+    font-size: 18px;
+    margin-bottom: 2rem;
+}
+  
+.profileButton {
+    background-color: #0004FF;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 14px 32px;
+    font-size: 16px;
+    width: 75%;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 250px;
+}
+  
+.profileButton:hover {
+    background-color: #0003CC;
+    transform: translateY(-2px);
+}
+
+.profileButton:active {
+    transform: translateY(0);
+}

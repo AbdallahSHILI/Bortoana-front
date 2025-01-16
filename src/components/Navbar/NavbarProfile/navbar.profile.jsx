@@ -1,5 +1,5 @@
 import React from 'react'
-import personne from '../../../assests/images/personne.png'
+import personne from '../../../assests/images/settings/Persone.svg'
 import styles from './navbar.profile.module.css'
 
 export default function NavbarProfile() {
