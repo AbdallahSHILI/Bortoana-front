@@ -37,10 +37,9 @@ const NichGenerator = ({ onClose }) => {
   useEffect(() => {
     const handleGetNich = async () => {
       try {
-        const response = await axios.get(
-          `https://bortoaana.onrender.com/api/user/getnich/${id}`,
-          { withCredentials: true }
-        );
+        const response = await axios.get(`http:localhost:5001/api/user/getnich/${id}`, {
+          withCredentials: true
+        })
         setExistingNich(response.data.nich)
         console.log('resopons', response)
       } catch (error) {
@@ -58,12 +57,9 @@ const NichGenerator = ({ onClose }) => {
   const handleNich = useCallback(
     async (nich) => {
       try {
-        const response = await axios.patch(
-          `https://bortoaana.onrender.com/api/user/updatenich/${id}`,
-          {
-            nich
-          }
-        )
+        const response = await axios.patch(`http:localhost:5001/api/user/updatenich/${id}`, {
+          nich
+        })
         setExistingNich(nich)
       } catch (error) {
         console.error('Error updating niche:', error)

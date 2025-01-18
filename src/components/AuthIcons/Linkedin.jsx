@@ -8,13 +8,14 @@ import axios from 'axios'
 const LinkedinAuth = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [token, setToken] = useState(null)
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const baseUrl = process.env.NODE_ENV == 'production' ? 'ttps://bortoaana.onrender.com' : 'http://localhost:5001'
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+  const baseUrl =
+    process.env.NODE_ENV == 'production' ? 'ttps://bortoaana.onrender.com' : 'http://localhost:5001'
 
   useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const handleResize = () => setScreenWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const checkAuthStatus = () => {
@@ -97,16 +98,23 @@ const LinkedinAuth = () => {
 
   const getRightPosition = (width) => {
     if (width >= 1600) {
-      return '47%'; // Adjust this value for 1600px screens
+      return '48%' // Adjust this value for 1600px screens
     } else if (width >= 1540) {
-      return '50%'; // Adjust this value for 1540px screens
+      return '50%' // Adjust this value for 1540px screens
     } else {
-      return '48%'; // Default for smaller screens
+      return '48%' // Default for smaller screens
     }
-  };
+  }
 
   return (
-    <div style={{ position: 'absolute', right: getRightPosition(screenWidth), bottom: '38%', zIndex: 500 }}>
+    <div
+      className=" bottom-[36%] 2xl:bottom-[31%]"
+      style={{
+        position: 'absolute',
+        right: getRightPosition(screenWidth),
+        zIndex: 500
+      }}
+    >
       {!token ? (
         <Tooltip placement="top" title="LinkedIn">
           <img

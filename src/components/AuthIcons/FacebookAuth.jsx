@@ -7,10 +7,9 @@ import Cookies from 'js-cookie'
 const FacebookAuth = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [token, setToken] = useState(null)
-  const baseUrl = process.env.NODE_ENV == 'production' ? 'ttps://bortoaana.onrender.com' : 'http://localhost:5001'
 
   // Ensure this matches your backend origin exactly
-  const ALLOWED_ORIGIN = 'https://bortoaana.onrender.com'
+  const ALLOWED_ORIGIN = 'http://localhost:5001'
   const FRONTEND_ORIGIN = window.location.origin
 
   const checkAuthStatus = () => {
@@ -65,7 +64,7 @@ const FacebookAuth = () => {
       sessionStorage.setItem('facebook_auth_state', state)
 
       // Open the popup with the state parameter
-      const loginUrl = `${baseUrl}/api/facebook/login?state=${state}&redirect_uri=${encodeURIComponent(FRONTEND_ORIGIN)}`
+      const loginUrl = `${ALLOWED_ORIGIN}/api/facebook/login?state=${state}&redirect_uri=${encodeURIComponent(FRONTEND_ORIGIN)}`
       window.open(loginUrl, 'FacebookLogin', featuresString)
     } catch (error) {
       console.error('Login error:', error)
@@ -143,8 +142,8 @@ const FacebookAuth = () => {
   }
 
   return (
-    <div className="absolute left-[38%] top-[43%] z-[500]">
-      {!token ? (
+    <div className="absolute left-[38%] 2xl:left-[37%] top-[39%] 2xl:top-[42%] z-[500]">
+      {!Cookies.get('facebook_page_token') || !Cookies.get('facebook_page_id') ? (
         <Tooltip placement="top" title="Facebook">
           <img
             src={FacebookIcon}
