@@ -28,18 +28,14 @@ const SettingsForm = ({ onClose }) => {
   const [loading, setLoading] = useState(false)
   const [hashtags, setHashtags] = useState([])
   const [isEditingBio, setIsEditingBio] = useState(false)
-  const [bio, setBio] = useState("write any bio here")
+  const [bio, setBio] = useState('write any bio here')
   const [tempBio, setTempBio] = useState(bio)
   const [existingNich, setExistingNich] = useState('')
-  
   const id = Cookies.get('userId')
-
   useEffect(() => {
     const fetchHashtags = async () => {
       try {
-        const response = await axios.get(
-          `https://bortoaana.onrender.com/api/user/getHashtags/${id}`
-        )
+        const response = await axios.get(`http://localhost:5001/api/user/getHashtags/${id}`)
         setHashtags(response.data.hashtags)
       } catch (error) {
         console.error('Error fetching hashtags:', error)
@@ -53,8 +49,9 @@ const SettingsForm = ({ onClose }) => {
 
   useEffect(() => {
     const handleGetNich = async () => {
+      console.log('Fetching niche...')
       try {
-        const response = await axios.get(`https://bortoaana.onrender.com/api/user/getnich/${id}`)
+        const response = await axios.get(`http://localhost:5001/api/user/getnich/${id}`)
         setExistingNich(response.data.nich)
       } catch (error) {
         console.error('Error fetching niche:', error)
@@ -121,7 +118,7 @@ const SettingsForm = ({ onClose }) => {
         <img src={Cross} alt="Close button" className="w-6 h-6" />
       </button>
       <h2 className="text-5xl font-bold text-gray-300">SETTINGS</h2>
-      
+
       <div className="text-white w-full h-full">
         <div className="pt-4 flex flex-row">
           <div className="w-1/3 h-full items-center justify-center flex">
@@ -146,7 +143,7 @@ const SettingsForm = ({ onClose }) => {
                 />
               )}
             </div>
-            
+
             {isEditingBio ? (
               <div className="flex flex-col gap-2">
                 <textarea
@@ -181,51 +178,51 @@ const SettingsForm = ({ onClose }) => {
               <PaintBrushIcon className="h-4 w-4 text-white" />
               <p className="text-xs text-bold">Tools</p>
             </div>
-            
-            <div className="h-full w-full mt-2">
-              <div className="h-2/3 bg-white rounded-lg flex items-center justify-center flex-row">
-                <div className="flex items-center border-r w-[100px] border-gray-300 pr-2 justify-center flex-col">
+
+            <div className="h-full w-full  mt-2">
+              <div className="h-2/3 bg-white  rounded-lg flex items-center  justify-center flex-row">
+                <div className="flex items-center border-r w-[100px] 2xl:w-[170px] border-gray-300  justify-center 2xl:gap-1 flex-col">
                   <div
                     onClick={openNichModal}
-                    className="cursor-pointer bg-black w-10 h-10 rounded-full flex items-center justify-center"
+                    className="cursor-pointer bg-black w-10 2xl:w-12 h-10 rounded-full flex items-center justify-center"
                   >
                     <img alt="Nich" src={AddIcon} className="" />
                   </div>
-                  <p className="text-sm text-black font-bold">Nich</p>
+                  <p className="text-sm 2xl:text-base text-black font-bold">Nich</p>
                 </div>
-                
-                <div className="flex items-center border-x w-[120px] border-gray-300 px-2 justify-center flex-col">
+
+                <div className="flex items-center border-x w-[120px] 2xl:w-[170px] border-gray-300 2xl:px-0 px-2 justify-center 2xl:gap-1 flex-col">
                   <div
                     onClick={openThemeModal}
-                    className="cursor-pointer bg-black w-10 h-10 rounded-full flex items-center justify-center"
+                    className="cursor-pointer bg-black w-10 2xl:w-12 h-10 rounded-full flex items-center justify-center"
                   >
                     <img alt="ThemeIcon" src={ThemeIcon} className="" />
                   </div>
-                  <p className="text-sm text-black font-bold">Page Theme</p>
+                  <p className="text-sm 2xl:text-base text-black font-bold">Page Theme</p>
                 </div>
-                
-                <div className="flex items-center border-x w-[140px] border-gray-300 px-2 justify-center flex-col">
-                  <div className="cursor-pointer bg-black w-10 h-10 rounded-full flex items-center justify-center">
+
+                <div className="flex items-center border-x w-[140px] 2xl:w-[170px] border-gray-300 2xl:px-0 px-2 justify-center 2xl:gap-1 flex-col">
+                  <div className="cursor-pointer bg-black w-10 2xl:w-12 h-10 rounded-full flex items-center justify-center">
                     <img alt="PostingFreq" src={PostingFreqIcon} className="" />
                   </div>
-                  <p className="text-sm text-black font-bold">Posting Frequency</p>
+                  <p className="text-sm 2xl:text-base text-black font-bold">Posting Frequency</p>
                 </div>
-                
-                <div className="flex items-center border-x w-[140px] border-gray-300 px-2 justify-center flex-col">
-                  <div className="cursor-pointer bg-black w-10 h-10 rounded-full flex items-center justify-center">
+
+                <div className="flex items-center border-x w-[140px] 2xl:w-[170px] border-gray-300 2xl:px-0 px-2 justify-center 2xl:gap-1 flex-col">
+                  <div className="cursor-pointer bg-black w-10 2xl:w-12 h-10 rounded-full flex items-center justify-center">
                     <img alt="Language" src={Language} className="" />
                   </div>
-                  <p className="text-sm text-black font-bold">Language Accent</p>
+                  <p className="text-sm 2xl:text-base text-black font-bold">Language Accent</p>
                 </div>
-                
-                <div className="flex items-center border-l w-[100px] border-gray-300 px-2 justify-center flex-col">
+
+                <div className="flex items-center border-l w-[100px] 2xl:w-[170px] border-gray-300 2xl:px-0 px-2 justify-center 2xl:gap-1 flex-col">
                   <div
                     onClick={openAudioModal}
-                    className="cursor-pointer bg-black w-10 h-10 rounded-full flex items-center justify-center"
+                    className="cursor-pointer bg-black w-10 h-10 2xl:w-12 rounded-full flex items-center justify-center "
                   >
                     <img alt="Mic" src={MicIcon} className="" />
                   </div>
-                  <p className="text-sm text-black font-bold">Audio</p>
+                  <p className="text-sm 2xl:text-base text-black font-bold">Audio</p>
                 </div>
               </div>
 

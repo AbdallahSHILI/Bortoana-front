@@ -16,6 +16,7 @@ import ProfileModal from './Modal/ProfileModal/profileModal'
 import SignupGoogle from './pages/SignupGoogle'
 import { ForgotPassword, ResetPassword } from './pages/ForgetPassword'
 import { StatsProvider } from './context/statsContext'
+import { NotificationProvider } from './context/NotificationContext'
 
 const App = () => {
   const [user, setUser] = useState('')
@@ -33,10 +34,10 @@ const App = () => {
         path: '/callback/twitter',
         element: <TwitterCallback />
       },
-{
-  path: '/forgot-password',
-  element: <ForgotPassword />
-},
+      {
+        path: '/forgot-password',
+        element: <ForgotPassword />
+      },
       {
         path: '/reset-password/:token',
         element: <ResetPassword />
@@ -52,7 +53,7 @@ const App = () => {
             <HomePage />
           </ProtectedRoutes>
         )
-      },   
+      },
       {
         path: '/twitter-test',
         element: (
@@ -87,15 +88,16 @@ const App = () => {
     }
   )
 
-
   return (
     <div
       className="bg-cover bg-no-repeat bg-center min-h-screen"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <AuthContext.Provider value={{ user, setUser, token, setToken }}>
-      <StatsProvider>
-        <RouterProvider router={router} />
+        <StatsProvider>
+          <NotificationProvider>
+            <RouterProvider router={router} />
+          </NotificationProvider>
         </StatsProvider>
       </AuthContext.Provider>
     </div>

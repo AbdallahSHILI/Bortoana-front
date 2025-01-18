@@ -35,8 +35,8 @@ function Login() {
       window.localStorage.setItem('token', response.data.token)
       window.localStorage.setItem('isLoggedIn', true)
 
-            // Refresh stats after successful login
-      await refreshStats();
+      // Refresh stats after successful login
+      await refreshStats()
 
       navigate('/home')
     } catch (error) {
@@ -69,7 +69,6 @@ function Login() {
     // Cleanup
     return () => clearInterval(checkCookies)
   }, [navigate])
-
 
   const handleGoogleLogin = () => {
     const baseUrl =
@@ -137,11 +136,11 @@ function Login() {
             />
           </div>
           <div className="w-full mb-4 flex justify-end">
-          <Link 
-  to="/forgot-password" 
-  state={{ source: 'login' }} 
-  className="text-blue-400 hover:underline"
->
+            <Link
+              to="/forgot-password"
+              state={{ source: 'login' }}
+              className="text-blue-400 hover:underline"
+            >
               Forgot your password?
             </Link>
           </div>
@@ -158,8 +157,8 @@ function Login() {
           >
             Continue with Google
           </button>
-          <Link 
-            to="/Signup" 
+          <Link
+            to="/Signup"
             className="bg-white mt-5 text-black py-2 px-4 rounded w-full hover:bg-gray-200 transition block text-center"
           >
             Signup with Email
@@ -167,7 +166,7 @@ function Login() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Login;
+export default Login

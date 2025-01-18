@@ -25,7 +25,8 @@ import axios from 'axios'
 const NichGenerator = ({ onClose }) => {
   const [existingNich, setExistingNich] = useState('')
   const id = Cookies.get('userId')
-  console.log(id)
+  const baseUrl =
+    process.env.NODE_ENV == 'production' ? 'ttps://bortoaana.onrender.com' : 'http://localhost:5001'
 
   //   const cards = Array.from({ length: 8 }, (_, index) => ({
   //   id: index + 1,
@@ -37,12 +38,10 @@ const NichGenerator = ({ onClose }) => {
   useEffect(() => {
     const handleGetNich = async () => {
       try {
-        const response = await axios.get(
-          `https://bortoaana.onrender.com/api/user/getnich/${id}`,
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${baseUrl}/api/user/getnich/${id}`, {
+          withCredentials: true
+        })
         setExistingNich(response.data.nich)
-        console.log('resopons', response)
       } catch (error) {
         console.error('Error fetching niche:', error)
       }
@@ -58,12 +57,9 @@ const NichGenerator = ({ onClose }) => {
   const handleNich = useCallback(
     async (nich) => {
       try {
-        const response = await axios.patch(
-          `https://bortoaana.onrender.com/api/user/updatenich/${id}`,
-          {
-            nich
-          }
-        )
+        const response = await axios.patch(`${baseUrl}/api/user/updatenich/${id}`, {
+          nich
+        })
         setExistingNich(nich)
       } catch (error) {
         console.error('Error updating niche:', error)

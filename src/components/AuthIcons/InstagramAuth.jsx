@@ -60,7 +60,7 @@ const InstagramAuth = () => {
   }
 
   return (
-    <div className="absolute top-[44%] left-[44%] z-[500]">
+    <div className="absolute  top-[42%] 2xl:top-[46%] left-[44%] z-[500]">
       {!token ? (
         <Tooltip placement="top" title="Instagram">
           <img

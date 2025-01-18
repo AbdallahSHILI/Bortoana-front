@@ -1,60 +1,57 @@
-import React, { useState } from 'react';
-import { FaRedo, FaEdit, FaSave } from 'react-icons/fa';
-import Propreties from './Propreties';
-import { ArrowLeftIcon } from 'lucide-react';
-import AudioPic from "../../assests/images/settings/Audio-Pic.svg"
-import RecordVoiceModal from '../../Modal/RecordVoice/recordVoice';
+import React, { useState } from 'react'
+import { FaRedo, FaEdit, FaSave } from 'react-icons/fa'
+import Propreties from './Propreties'
+import { ArrowLeftIcon } from 'lucide-react'
+import AudioPic from '../../assests/images/settings/Audio-Pic.svg'
+import RecordVoiceModal from '../../Modal/RecordVoice/recordVoice'
+import { Circle, Mic } from 'lucide-react'
 
 const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
-  const [showRecordModal, setShowRecordModal] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedTranscript, setEditedTranscript] = useState(transcript || '');
-  const [showProperties, setShowProperties] = useState(false);
+  const [showRecordModal, setShowRecordModal] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedTranscript, setEditedTranscript] = useState(transcript || '')
+  const [showProperties, setShowProperties] = useState(false)
 
   const handleProceed = () => {
-    setShowProperties(true);
-  };
+    setShowProperties(true)
+  }
 
   const handleEditClick = (e) => {
-    e.stopPropagation();
-    setIsEditing(true);
-  };
+    e.stopPropagation()
+    setIsEditing(true)
+  }
 
   const handleSaveClick = (e) => {
-    e.stopPropagation();
-    setIsEditing(false);
-  };
+    e.stopPropagation()
+    setIsEditing(false)
+  }
 
   const handleTranscriptChange = (e) => {
-    setEditedTranscript(e.target.value);
-  };
+    setEditedTranscript(e.target.value)
+  }
 
   const handleRecordAgain = () => {
-    setShowRecordModal(true);
-  };
+    setShowRecordModal(true)
+  }
 
   const handleSaveRecording = (recordingData) => {
     if (recordingData.transcribedText) {
-      setEditedTranscript(prevTranscript => {
-        const separator = prevTranscript ? '\n' : '';
-        return prevTranscript + separator + recordingData.transcribedText;
-      });
+      setEditedTranscript((prevTranscript) => {
+        const separator = prevTranscript ? '\n' : ''
+        return prevTranscript + separator + recordingData.transcribedText
+      })
     }
-    setShowRecordModal(false);
-  };
+    setShowRecordModal(false)
+  }
 
   if (showProperties) {
-    return <Propreties />;
+    return <Propreties description={editedTranscript} onClose={() => setShowProperties(false)} />
   }
 
   return (
     <div className="ml-16 w-full flex-col">
       <div>
-        <img 
-          alt="audio visualization" 
-          src={AudioPic}
-          className="w-[250px]" 
-        />
+        <img alt="audio visualization" src={AudioPic} className="w-[250px]" />
       </div>
 
       <div className="flex flex-row gap-16">
@@ -69,9 +66,9 @@ const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
           <div className="flex flex-row justify-between">
             <div>
               <div className="text-white text-xs">Record Bortoana :</div>
-              <div className="text-xs text-gray-600">13/09/2023</div>
+              <div className="text-xs text-gray-600">{new Date().toLocaleDateString()}</div>
             </div>
-            
+
             <div className="flex flex-row space-x-2 justify-center items-center">
               <button
                 onClick={handleRecordAgain}
@@ -80,7 +77,7 @@ const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
                 <FaRedo className="mr-1" />
                 Record Again
               </button>
-              
+
               <button
                 onClick={handleEditClick}
                 className="w-[60px] h-[15px] bg-slate-950 text-[8px] rounded-sm text-gray-600 flex justify-center items-center cursor-pointer hover:bg-slate-900"
@@ -119,7 +116,10 @@ const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
       <div className="ml-24">
         <button
           onClick={handleProceed}
-          className="text-white text-xs w-[100px] h-[35px] rounded-sm mt-2 bg-[#0004FF]"
+          className={`text-white text-xs w-[100px] h-[35px] rounded-sm mt-2 bg-[#0004FF] ${
+            editedTranscript.length < 2 ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+          disabled={editedTranscript.length < 2}
         >
           Proceed
         </button>
@@ -133,7 +133,7 @@ const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default TranscriptComponent;
+export default TranscriptComponent

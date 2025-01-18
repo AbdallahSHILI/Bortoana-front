@@ -1,8 +1,7 @@
 import Modal from '../../utils/Modal'
-import Video from '../../assests/videos/edit_test.mp4'
 import Thumbnail from '../../assests/images/inputs/Thumbnail.svg'
 import ReactPlayer from 'react-player'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   FaFacebookF,
   FaInstagram,
@@ -21,15 +20,26 @@ import { FaXTwitter, FaSnapchat } from 'react-icons/fa6'
 import { PencilLine, RotateCcw } from 'lucide-react'
 import { publishToSelectedPlatforms } from '../../utils/SocialMediaFunctions'
 
-
-const ScheduleModal = ({ onClose }) => {
+const ScheduleModal = ({ onClose, videoUrl, videoTitle }) => {
+  console.log('Video URL in ScheduleModal:', videoUrl)
   const [selected, setSelected] = useState([])
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [selectedTime, setSelectedTime] = useState(new Date())
   const [isPublishing, setIsPublishing] = useState(false)
   const [publishResults, setPublishResults] = useState(null)
+  const [userHashtags, setUserHashtags] = useState([])
 
-  const videoUrl = 'https://files.catbox.moe/gr6f4l.mp4'
+  useEffect(() => {
+    try {
+      const userData = JSON.parse(localStorage.getItem('userData'))
+      if (userData?.hashtags) {
+        setUserHashtags(userData.hashtags)
+      }
+    } catch (error) {
+      console.error('Error loading hashtags:', error)
+    }
+  }, [])
+
   const handleNextStep = async () => {
     if (selected.length === 0) {
       alert('Please select at least one social media platform')
@@ -44,24 +54,21 @@ const ScheduleModal = ({ onClose }) => {
       scheduledDateTime.setHours(selectedTime.getHours())
       scheduledDateTime.setMinutes(selectedTime.getMinutes())
 
-      // Prepare content object
+      // Prepare content object with passed video URL
       const content = {
         videoUrl: videoUrl,
-        title: 'Why Do People Watch Other People Play Video Games?',
+        title: userHashtags,
         scheduledTime: scheduledDateTime.toISOString()
       }
-      console.log(content)
+
       // Publish to selected platforms
       const results = await publishToSelectedPlatforms(selected, content)
-
-      setPublishResults(results) // Now results has success and failures arrays
+      setPublishResults(results)
 
       if (results.failures.length === 0) {
-        // All publications successful
         alert('Successfully scheduled for all platforms!')
         onClose()
       } else {
-        // Some publications failed
         alert(
           `Published to ${results.success.length} platforms. ${results.failures.length} failed.`
         )
@@ -141,7 +148,7 @@ const ScheduleModal = ({ onClose }) => {
       label: 'Telegram',
       icon: FaTelegramPlane,
       selectedBg: 'bg-[#26A5E4]'
-    },
+    }
   ]
 
   const toggleSelect = (id) => {
@@ -169,10 +176,23 @@ const ScheduleModal = ({ onClose }) => {
       <div className="flex flex-col gap-8 p-4">
         <div className="flex flex-row gap-6">
           <div className="flex gap-2 flex-col">
-            <div className="rounded-lg w-[450px]  overflow-hidden border-2 border-gray-500">
-              <ReactPlayer url={Video} controls width="100%" height="100%" />
-            </div>{' '}
-            <p className="text-white ">Why Do People Watch Other People Play Video Games?</p>
+            <div className="rounded-lg w-[450px] overflow-hidden border-2 border-gray-500">
+              <ReactPlayer
+                url={videoUrl}
+                controls={true}
+                width="100%"
+                height="100%"
+                // Add crossOrigin for remote videos
+                config={{
+                  file: {
+                    attributes: {
+                      crossOrigin: 'anonymous'
+                    }
+                  }
+                }}
+              />
+            </div>
+            <p className="text-white">{videoTitle}</p>
           </div>
           <div className="flex gap-2 flex-col">
             <div className="rounded-lg  w-[450px] h-[253px] overflow-hidden border-2 border-gray-500 ">

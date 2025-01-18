@@ -1,50 +1,87 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import { FaRedo, FaEdit, FaSave } from 'react-icons/fa'
+import { FaRedo, FaEdit, FaSave, FaTimes } from 'react-icons/fa'
 import Start from '../../assests/images/start.png'
 import ReactPlayer from 'react-player'
-import Video from '../../assests/videos/edit_test.mp4'
 import ScheduleModal from './ScheduleModal'
-export default function GeneratingModal({ show, onClose }) {
-  const [isGenerating, setIsGenerating] = useState(true)
-  const [isSheduleModal, setisSheduleModal] = useState(false)
 
-  // Use useEffect to transition from generating state to final content
+export default function GeneratingModal({
+  show,
+  onClose,
+  isGeneratingOnly = false,
+  videoPath = null,
+  onRegenerate
+}) {
+  const [isGenerating, setIsGenerating] = useState(true)
+  const [isScheduleModal, setIsScheduleModal] = useState(false)
+  const [videoTitle, setVideoTitle] = useState('Why Do People Watch Other People Play Video Games?')
+
   useEffect(() => {
-    if (show) {
-      const timer = setTimeout(() => {
-        setIsGenerating(false)
-      }, 5000) // Wait for 5 seconds
-      return () => clearTimeout(timer) // Cleanup timer on unmount
+    if (videoPath) {
+      setIsGenerating(false)
     }
-  }, [show])
+  }, [videoPath])
 
   if (!show) return null
 
   const handleModalClick = (e) => {
-    e.stopPropagation() // Prevent click from reaching the backdrop
+    e.stopPropagation()
   }
 
-  const handleOpen = () => {
-    setisSheduleModal(true)
+  const handleRegenerate = () => {
+    setIsGenerating(true)
+    onRegenerate()
   }
-  const handleClose = () => {
-    setisSheduleModal(false)
+
+  const handleOpen = () => setIsScheduleModal(true)
+  const handleClose = () => setIsScheduleModal(false)
+
+  // Function to handle canceling the generating process
+  const handleCancelGenerating = async () => {
+    try {
+      // Call the cancel generation endpoint
+      const response = await fetch('http://localhost:5001/api/video/cancel-generating', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        console.log('Generation cancelled successfully')
+        setIsGenerating(false) // Stop the generating state
+        onClose() // Close the modal
+      } else {
+        console.error('Failed to cancel generation:', data.message)
+      }
+    } catch (error) {
+      console.error('Error cancelling generation:', error)
+    }
   }
 
   return ReactDOM.createPortal(
     <div
-      onClick={onClose}
+      onClick={isGeneratingOnly ? undefined : onClose}
       className="inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 fixed"
     >
       <div
         style={{ backgroundColor: '#303030' }}
         className="w-1/2 h-2/4 border border-white rounded-lg flex flex-col items-center justify-center"
       >
-        {isGenerating ? (
+        {isGenerating || isGeneratingOnly ? (
           <>
             <div className="loader border-4 border-gray-300 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>
             <p className="text-white mt-3 text-sm">Generating your video...</p>
+            {/* Cancel Generating Button */}
+            <button
+              onClick={handleCancelGenerating}
+              className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 flex items-center"
+            >
+              <FaTimes className="mr-2" /> {/* Cancel icon */}
+              Cancel Generating
+            </button>
           </>
         ) : (
           <div>
@@ -52,14 +89,15 @@ export default function GeneratingModal({ show, onClose }) {
               <div
                 onClick={handleModalClick}
                 style={{ backgroundColor: '#303030' }}
-                className="  border border-white rounded-lg flex flex-col"
+                className="border border-white rounded-lg flex flex-col"
               >
-                <div className="p-3 text-white flex flex-row items-center justify-between ">
-                  <div className="text-bold">
-                    Why do People watch other people play video game ?
-                  </div>
+                <div className="p-3 text-white flex flex-row items-center justify-between">
+                  <div className="text-bold">Video Generated Successfully</div>
                   <div className="flex flex-row space-x-2">
-                    <div className="text-xs p-2 bg-[#1A1A1C] hover:bg-slate-600 cursor-pointer rounded-md flex flex-row items-center">
+                    <div
+                      onClick={handleRegenerate}
+                      className="text-xs p-2 bg-[#1A1A1C] hover:bg-slate-600 cursor-pointer rounded-md flex flex-row items-center"
+                    >
                       <FaRedo className="mr-2" />
                       Regenerate
                     </div>
@@ -70,20 +108,29 @@ export default function GeneratingModal({ show, onClose }) {
                   </div>
                 </div>
 
-                <div className="px-12 pb-2 w-[800px]  rounded-xl relative flex items-center justify-center">
-                  {/* Video Image */}
-                  <ReactPlayer url={Video} controls width="100%" height="100%" />
-
-                  {/* Start Image (Play Icon) */}
+                <div className="px-12 pb-2 w-[800px] rounded-xl relative flex items-center justify-center">
+                  <ReactPlayer
+                    url={videoPath}
+                    controls={true}
+                    width="100%"
+                    height="100%"
+                    crossOrigin="anonymous"
+                    config={{
+                      file: {
+                        attributes: {
+                          crossOrigin: 'anonymous'
+                        }
+                      }
+                    }}
+                  />
                 </div>
-                {/* proceed button  */}
+
                 <div className="flex items-center justify-center">
                   <div
                     onClick={handleOpen}
-                    className="p-6 m-3 bg-[#0004FF] text-white hover:bg-blue-700 cursor-pointer w-[160px]  h-[30px] flex items-center justify-center rounded-md"
+                    className="p-6 m-3 bg-[#0004FF] text-white hover:bg-blue-700 cursor-pointer w-[160px] h-[30px] flex items-center justify-center rounded-md"
                   >
-                    {' '}
-                    Proceed{' '}
+                    Proceed
                   </div>
                 </div>
               </div>
@@ -92,8 +139,10 @@ export default function GeneratingModal({ show, onClose }) {
         )}
       </div>
 
-      {isSheduleModal && <ScheduleModal onClose={handleClose} />}
-      {/* Loader Styles */}
+      {isScheduleModal && (
+        <ScheduleModal onClose={handleClose} videoUrl={videoPath} videoTitle={videoTitle} />
+      )}
+
       <style jsx>{`
         @keyframes spin {
           0% {
@@ -105,6 +154,6 @@ export default function GeneratingModal({ show, onClose }) {
         }
       `}</style>
     </div>,
-    document.body // Use document.body as the portal container
+    document.body
   )
 }

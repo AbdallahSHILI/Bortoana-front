@@ -92,7 +92,7 @@ export const handleLinkedinShare = async (content) => {
         Authorization: `Bearer ${accessToken}`
       },
       body: JSON.stringify({
-        videoUrl: content.videUrl,
+        videoUrl: content.videoUrl, 
         title: content.title
         // description: 'Sharing this awesome video to LinkedIn.'
       })

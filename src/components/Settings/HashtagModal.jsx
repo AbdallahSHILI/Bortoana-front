@@ -16,13 +16,14 @@ const HashtagModal = ({
 }) => {
   const [hashtags, setHashtags] = useState([])
   const id = Cookies.get('userId')
+  const baseUrl = process.env.NODE_ENV == 'production' ? 'https://bortoaana.onrender.com' : 'http://localhost:5001'
 
   const GenerateHashtags = async () => {
     if (existingNich) {
       setLoading(true)
 
       try {
-        const response = await axios.post('http://localhost:5000/generate_hashtags', {
+        const response = await axios.post(`${baseUrl}/api/user/generate_hashtags`, {
           nich: existingNich
         })
         console.log('Hashtags generated successfully:', response.data)
@@ -39,7 +40,7 @@ const HashtagModal = ({
     try {
       // Send the hashtags to the server or wherever you need them
       const response = await axios.post(
-        `https://bortoaana.onrender.com/api/user/setHashtags/${id}`,
+        `${baseUrl}/api/user/setHashtags/${id}`,
         {
           hashtags
         }
