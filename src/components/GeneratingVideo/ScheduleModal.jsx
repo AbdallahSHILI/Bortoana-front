@@ -13,6 +13,8 @@ import {
   FaWhatsapp,
   FaPinterestP
 } from 'react-icons/fa'
+import Cookies from 'js-cookie'
+
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { FaRegCalendar, FaRegClock } from 'react-icons/fa'
@@ -28,8 +30,34 @@ const ScheduleModal = ({ onClose, videoUrl, videoTitle }) => {
   const [isPublishing, setIsPublishing] = useState(false)
   const [publishResults, setPublishResults] = useState(null)
   const [userHashtags, setUserHashtags] = useState([])
+  const [availablePlatforms, setAvailablePlatforms] = useState([])
 
   useEffect(() => {
+    // Check cookies for platform tokens
+    const checkAvailablePlatforms = () => {
+      const platforms = []
+
+      // Add platform if its token exists in cookies
+      if (Cookies.get('facebook_page_token')) platforms.push('facebook')
+      if (Cookies.get('instagram_token')) platforms.push('instagram')
+      if (Cookies.get('whatsapp_token')) platforms.push('whatsapp')
+      if (Cookies.get('pinterest_token')) platforms.push('pinterest')
+      if (Cookies.get('snapchat_token')) platforms.push('snapchat')
+      if (Cookies.get('twitter_oauth_token')) platforms.push('X')
+      if (Cookies.get('linkedin_oauth_access_token')) platforms.push('linkedin')
+      if (Cookies.get('tiktok_token')) platforms.push('tiktok')
+      if (Cookies.get('youtube_token')) platforms.push('youtube')
+      if (Cookies.get('telegram_token')) platforms.push('telegram')
+
+      setAvailablePlatforms(platforms)
+
+      // Clear any selected platforms that are no longer available
+      setSelected((prev) => prev.filter((p) => platforms.includes(p)))
+    }
+
+    checkAvailablePlatforms()
+
+    // Load hashtags
     try {
       const userData = JSON.parse(localStorage.getItem('userData'))
       if (userData?.hashtags) {
@@ -153,12 +181,10 @@ const ScheduleModal = ({ onClose, videoUrl, videoTitle }) => {
 
   const toggleSelect = (id) => {
     if (id === 'all') {
-      // If ALL is clicked, either select all or clear all
-      if (selected.length === socialIcons.length - 1) {
-        // -1 to exclude the "more" option
+      if (selected.length === availablePlatforms.length) {
         setSelected([])
       } else {
-        setSelected(socialIcons.slice(0, -1).map((icon) => icon.id)) // Select all except "more"
+        setSelected([...availablePlatforms])
       }
     } else {
       setSelected((prev) =>
@@ -166,6 +192,9 @@ const ScheduleModal = ({ onClose, videoUrl, videoTitle }) => {
       )
     }
   }
+  const filteredSocialIcons = socialIcons.filter(
+    (icon) => icon.id === 'all' || availablePlatforms.includes(icon.id)
+  )
 
   return (
     <Modal
@@ -225,34 +254,40 @@ const ScheduleModal = ({ onClose, videoUrl, videoTitle }) => {
             <p className="text-white text-sm">1.Select the social media</p>
             <div className="max-w-2xl p-4 pl-0  rounded-lg">
               <div className="grid grid-cols-4 sm:grid-cols-4 gap-3">
-                {socialIcons.map(
-                  ({ id, label, icon: Icon, selectedBg, selectedText = 'text-white' }) => (
-                    <button
-                      key={id}
-                      onClick={() => toggleSelect(id)}
-                      className={`
-              relative flex items-center justify-center
-              w-10 h-10 rounded-full transition-all duration-200
-              ${
-                selected.includes(id)
-                  ? `${selectedBg} ${selectedText} ring-2 ring-offset-2 ring-offset-gray-900 ring-white/20`
-                  : 'bg-[#1A1A1C] text-gray-400 hover:bg-[#2a2a2d] hover:text-gray-200'
-              }
-            `}
-                    >
-                      {id === 'all' ? (
-                        <span className="text-xs font-bold">ALL</span>
-                      ) : Icon ? (
-                        <Icon size={20} />
-                      ) : (
-                        <span className="text-xs font-bold">{label[0]}</span>
-                      )}
-                      {selected.includes(id) && (
-                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full" />
-                      )}
-                    </button>
-                  )
-                )}
+                <div className="flex flex-col">
+                  <div className="max-w-2xl p-4 pl-0 rounded-lg">
+                    {availablePlatforms.length === 0 ? (
+                      <p className="text-gray-400 text-lg  text-center">
+                        You must connect to at least one social media account
+                      </p>
+                    ) : (
+                      <div className="grid grid-cols-4 sm:grid-cols-4 gap-3">
+                        {filteredSocialIcons.map(
+                          ({ id, label, icon: Icon, selectedBg, selectedText = 'text-white' }) => (
+                            <button
+                              key={id}
+                              onClick={() => toggleSelect(id)}
+                              className={`
+                relative flex items-center justify-center
+                w-10 h-10 rounded-full transition-all duration-200
+                ${
+                  selected.includes(id)
+                    ? `${selectedBg} ${selectedText} ring-2 ring-offset-2 ring-offset-gray-900 ring-white/20`
+                    : 'bg-[#1A1A1C] text-gray-400 hover:bg-[#2a2a2d] hover:text-gray-200'
+                }
+              `}
+                            >
+                              {Icon && <Icon size={20} />}
+                              {selected.includes(id) && (
+                                <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full" />
+                              )}
+                            </button>
+                          )
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

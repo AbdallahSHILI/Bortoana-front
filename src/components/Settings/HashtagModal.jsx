@@ -16,7 +16,10 @@ const HashtagModal = ({
 }) => {
   const [hashtags, setHashtags] = useState([])
   const id = Cookies.get('userId')
-  const baseUrl = process.env.NODE_ENV == 'production' ? 'https://bortoaana.onrender.com' : 'http://localhost:5001'
+  const baseUrl =
+    process.env.NODE_ENV == 'production'
+      ? 'https://bortoaana.onrender.com'
+      : 'http://localhost:5001'
 
   const GenerateHashtags = async () => {
     if (existingNich) {
@@ -39,12 +42,9 @@ const HashtagModal = ({
   const handleSave = async () => {
     try {
       // Send the hashtags to the server or wherever you need them
-      const response = await axios.post(
-        `${baseUrl}/api/user/setHashtags/${id}`,
-        {
-          hashtags
-        }
-      )
+      const response = await axios.post(`${baseUrl}/api/user/setHashtags/${id}`, {
+        hashtags
+      })
       console.log('Hashtags saved successfully:', response.data)
       handleCloseGenerate() // Close the modal after saving
     } catch (error) {

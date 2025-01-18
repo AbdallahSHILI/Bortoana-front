@@ -38,7 +38,7 @@ const NichGenerator = ({ onClose }) => {
   useEffect(() => {
     const handleGetNich = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/api/user/getnich/${id}`, {
+        const response = await axios.get(`http://localhost:5001/api/user/getnich/${id}`, {
           withCredentials: true
         })
         setExistingNich(response.data.nich)
@@ -57,7 +57,7 @@ const NichGenerator = ({ onClose }) => {
   const handleNich = useCallback(
     async (nich) => {
       try {
-        const response = await axios.patch(`${baseUrl}/api/user/updatenich/${id}`, {
+        const response = await axios.patch(`http://localhost:5001/api/user/updatenich/${id}`, {
           nich
         })
         setExistingNich(nich)
@@ -118,84 +118,84 @@ const NichGenerator = ({ onClose }) => {
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={EducationalPage}
-                Title="Educational Pages"
+                Title="Educational"
                 Description="Provide advice or educational information in areas such as languages, science, or skills."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={CookingPage}
-                Title="Food Pages"
+                Title="Food"
                 Description="Focuses on recipes, restaurant experiences, and food photography."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={TravelPage}
-                Title="Travel Pages"
+                Title="Travel"
                 Description="Dedicated to reviewing tourist attractions and travel experiences."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={FitnessPage}
-                Title="Fitness & Health Pages"
+                Title="Fitness & Health"
                 Description="Focuses on exercise, nutritional advice, and a healthy lifestyle."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Fashion}
-                Title="Fashion & Beauty Pages"
+                Title="Fashion & Beauty"
                 Description="Interested in sharing fashion, cosmetics and the latest trends."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Comedy}
-                Title="Comedy Pages"
+                Title="Comedy"
                 Description="Provides entertainment content, jokes, satirical videos, and memes."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Charity}
-                Title="Charity Pages"
+                Title="Charity"
                 Description="Aim to support community issues or spread awareness and collect donations."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Hobby}
-                Title="Hobby Pages"
+                Title="Hobby"
                 Description="Dedicated to sharing hobbies such as photography, drawing, gaming, etc."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Pet}
-                Title="Pet Pages"
+                Title="Pets"
                 Description="Focuses on photos and videos of pets and their parenting experiences."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={News}
-                Title="News Pages"
+                Title="News"
                 Description="Covering daily news and political, economic, or sports developments."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Ecommerce}
-                Title="E-commerce Pages"
+                Title="E-commerce"
                 Description="Sell ​​products or services directly through Instagram."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Motivation}
-                Title="Motivational Pages"
+                Title="Motivational"
                 Description="Provides tips for personal motivation and skill development."
               />
             </div>
