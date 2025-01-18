@@ -35,7 +35,7 @@ const SettingsForm = ({ onClose }) => {
   useEffect(() => {
     const fetchHashtags = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/api/user/getHashtags/${id}`)
+        const response = await axios.get(`http:localhost:5001/api/user/getHashtags/${id}`)
         setHashtags(response.data.hashtags)
       } catch (error) {
         console.error('Error fetching hashtags:', error)
@@ -51,7 +51,7 @@ const SettingsForm = ({ onClose }) => {
     const handleGetNich = async () => {
       console.log('Fetching niche...')
       try {
-        const response = await axios.get(`http://localhost:5001/api/user/getnich/${id}`)
+        const response = await axios.get(`http:localhost:5001/api/user/getnich/${id}`)
         setExistingNich(response.data.nich)
       } catch (error) {
         console.error('Error fetching niche:', error)

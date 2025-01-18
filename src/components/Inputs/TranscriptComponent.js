@@ -4,7 +4,6 @@ import Propreties from './Propreties'
 import { ArrowLeftIcon } from 'lucide-react'
 import AudioPic from '../../assests/images/settings/Audio-Pic.svg'
 import RecordVoiceModal from '../../Modal/RecordVoice/recordVoice'
-import { Circle, Mic } from 'lucide-react'
 
 const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
   const [showRecordModal, setShowRecordModal] = useState(false)
@@ -66,7 +65,7 @@ const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
           <div className="flex flex-row justify-between">
             <div>
               <div className="text-white text-xs">Record Bortoana :</div>
-              <div className="text-xs text-gray-600">{new Date().toLocaleDateString()}</div>
+              <div className="text-xs text-gray-600"> {new Date().toLocaleDateString('en-GB')}</div>
             </div>
 
             <div className="flex flex-row space-x-2 justify-center items-center">
