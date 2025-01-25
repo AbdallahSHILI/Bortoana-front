@@ -118,84 +118,84 @@ const NichGenerator = ({ onClose }) => {
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={EducationalPage}
-                Title="Educational"
+                Title="Educational Pages"
                 Description="Provide advice or educational information in areas such as languages, science, or skills."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={CookingPage}
-                Title="Food"
+                Title="Food Pages"
                 Description="Focuses on recipes, restaurant experiences, and food photography."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={TravelPage}
-                Title="Travel"
+                Title="Travel Pages"
                 Description="Dedicated to reviewing tourist attractions and travel experiences."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={FitnessPage}
-                Title="Fitness & Health"
+                Title="Fitness & Health Pages"
                 Description="Focuses on exercise, nutritional advice, and a healthy lifestyle."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Fashion}
-                Title="Fashion & Beauty"
+                Title="Fashion & Beauty Pages"
                 Description="Interested in sharing fashion, cosmetics and the latest trends."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Comedy}
-                Title="Comedy"
+                Title="Comedy Pages"
                 Description="Provides entertainment content, jokes, satirical videos, and memes."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Charity}
-                Title="Charity"
+                Title="Charity Pages"
                 Description="Aim to support community issues or spread awareness and collect donations."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Hobby}
-                Title="Hobby"
+                Title="Hobby Pages"
                 Description="Dedicated to sharing hobbies such as photography, drawing, gaming, etc."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Pet}
-                Title="Pets"
+                Title="Pets Pages"
                 Description="Focuses on photos and videos of pets and their parenting experiences."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={News}
-                Title="News"
+                Title="News Pages"
                 Description="Covering daily news and political, economic, or sports developments."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Ecommerce}
-                Title="E-commerce"
+                Title="E-commerce Pages"
                 Description="Sell ​​products or services directly through Instagram."
               />
               <NichCard
                 handleNich={handleNich}
                 existingNich={existingNich}
                 ImgUrl={Motivation}
-                Title="Motivational"
+                Title="Motivational Pages"
                 Description="Provides tips for personal motivation and skill development."
               />
             </div>

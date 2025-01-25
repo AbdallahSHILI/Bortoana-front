@@ -48,59 +48,62 @@ const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
   }
 
   return (
-    <div className="ml-16 w-full flex-col">
+    <div className="ml-8 w-full flex-col">
       <div>
-        <img alt="audio visualization" src={AudioPic} className="w-[250px]" />
+        <img alt="audio visualization" src={AudioPic} className="w-[180px]" />
       </div>
 
-      <div className="flex flex-row gap-16">
+      <div className="flex flex-row gap-8">
         <button
           onClick={onClose}
-          className="mt-5 top-0 bg-white w-[35px] h-[35px] cursor-pointer rounded-full flex items-center justify-center"
+          className="mt-3 top-0 bg-white w-[28px] h-[28px] cursor-pointer rounded-full flex items-center justify-center"
         >
-          <ArrowLeftIcon className="w-4 h-5 text-gray-700" />
+          <ArrowLeftIcon className="w-3 h-4 text-gray-700" />
         </button>
 
-        <div className="w-[530px] h-[190px] rounded-lg p-3 bg-[#7090B033]">
+        <div className="w-[400px] h-[150px] rounded-lg p-2 bg-[#7090B033] smaller-1610:w-[250px]  smaller-1610:h-[120px]">
           <div className="flex flex-row justify-between">
             <div>
-              <div className="text-white text-xs">Record Bortoana :</div>
-              <div className="text-xs text-gray-600"> {new Date().toLocaleDateString('en-GB')}</div>
+              <div className="text-white text-[10px]">Record Bortoana :</div>
+              <div className="text-[10px] text-gray-600">
+                {' '}
+                {new Date().toLocaleDateString('en-GB')}
+              </div>
             </div>
 
             <div className="flex flex-row space-x-2 justify-center items-center">
               <button
                 onClick={handleRecordAgain}
-                className="w-[80px] h-[15px] bg-slate-950 text-[8px] rounded-sm text-gray-600 flex justify-center items-center cursor-pointer hover:bg-slate-900"
+                className="w-[60px] h-[12px] bg-slate-950 text-[6px] rounded-sm text-gray-600 flex justify-center items-center cursor-pointer hover:bg-slate-900"
               >
-                <FaRedo className="mr-1" />
+                <FaRedo className="mr-1 w-2 h-2" />
                 Record Again
               </button>
 
               <button
                 onClick={handleEditClick}
-                className="w-[60px] h-[15px] bg-slate-950 text-[8px] rounded-sm text-gray-600 flex justify-center items-center cursor-pointer hover:bg-slate-900"
+                className="w-[45px] h-[12px] bg-slate-950 text-[6px] rounded-sm text-gray-600 flex justify-center items-center cursor-pointer hover:bg-slate-900"
               >
-                <FaEdit className="mr-1" />
+                <FaEdit className="mr-1 w-2 h-2" />
                 Edit Text
               </button>
             </div>
           </div>
 
-          <div className="text-white text-xs mt-2">
+          <div className="text-white text-[10px] mt-2">
             {isEditing ? (
               <div className="flex flex-col space-y-2">
                 <textarea
                   value={editedTranscript}
                   onChange={handleTranscriptChange}
-                  className="text-white text-xs w-full rounded-sm px-2 py-1 bg-gray-800 min-h-[80px] resize-none"
+                  className="text-white text-[10px] w-full rounded-sm px-2 py-1 bg-gray-800 min-h-[60px] resize-none"
                 />
                 <div className="flex justify-start">
                   <button
                     onClick={handleSaveClick}
-                    className="cursor-pointer text-white bg-blue-500 text-xs rounded-sm px-3 py-1 flex items-center gap-1"
+                    className="cursor-pointer text-white bg-blue-500 text-[10px] rounded-sm px-2 py-1 flex items-center gap-1"
                   >
-                    <FaSave className="w-3 h-3" />
+                    <FaSave className="w-2 h-2" />
                     Save
                   </button>
                 </div>
@@ -112,10 +115,10 @@ const TranscriptComponent = ({ transcript, onRecordAgain, onClose }) => {
         </div>
       </div>
 
-      <div className="ml-24">
+      <div className="ml-16">
         <button
           onClick={handleProceed}
-          className={`text-white text-xs w-[100px] h-[35px] rounded-sm mt-2 bg-[#0004FF] ${
+          className={`text-white text-[10px] w-[80px] h-[25px] rounded-sm mt-2 bg-[#0004FF] ${
             editedTranscript.length < 2 ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           disabled={editedTranscript.length < 2}

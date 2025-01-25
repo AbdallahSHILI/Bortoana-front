@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import FacebookIcon from '../../assests/images/icons/facebook.png'
-import { XMarkIcon } from '@heroicons/react/24/solid'
 import { Tooltip } from '@mui/material'
 import Cookies from 'js-cookie'
 
-const FacebookAuth = () => {
+const FacebookAuth = ({ style }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [token, setToken] = useState(null)
 
-  // Ensure this matches your backend origin exactly
-  const ALLOWED_ORIGIN = 'http://localhost:5001'
-  const FRONTEND_ORIGIN = window.location.origin
+  const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? 'https://bortoaana.onrender.com'
+      : 'http://localhost:5001'
 
   const checkAuthStatus = () => {
     const pageToken = Cookies.get('facebook_page_token')
@@ -30,104 +30,55 @@ const FacebookAuth = () => {
     return () => clearInterval(intervalId)
   }, [])
 
-  const handleFacebookLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     setIsLoading(true)
 
     try {
-      // Calculate center position for the popup
       const width = 600
       const height = 800
-      const left = (window.innerWidth - width) / 2 + window.screenX
-      const top = (window.innerHeight - height) / 2 + window.screenY
+      const left = (window.innerWidth - width) / 2
+      const top = (window.innerHeight - height) / 2
 
-      // Configure window features
-      const windowFeatures = {
-        width,
-        height,
-        left,
-        top,
-        menubar: 'no',
-        toolbar: 'no',
-        location: 'no',
-        status: 'no',
-        scrollbars: 'yes',
-        resizable: 'yes'
-      }
+      // Add popup-active class when opening popup
+      document.body.classList.add('popup-active')
 
-      const featuresString = Object.entries(windowFeatures)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(',')
-
-      // Add state parameter to prevent CSRF
       const state = Math.random().toString(36).substring(7)
       sessionStorage.setItem('facebook_auth_state', state)
 
-      // Open the popup with the state parameter
-      const loginUrl = `${ALLOWED_ORIGIN}/api/facebook/login?state=${state}&redirect_uri=${encodeURIComponent(FRONTEND_ORIGIN)}`
-      window.open(loginUrl, 'FacebookLogin', featuresString)
+      const popup = window.open(
+        `${baseUrl}/api/facebook/login?state=${state}&redirect_uri=${encodeURIComponent(
+          window.location.origin
+        )}`,
+        'Facebook Login',
+        `width=${width},height=${height},left=${left},top=${top}`
+      )
+
+      const popupInterval = setInterval(() => {
+        if (popup.closed) {
+          clearInterval(popupInterval)
+          setIsLoading(false)
+          // Remove popup-active class when popup closes
+          document.body.classList.remove('popup-active')
+          return
+        }
+
+        if (checkAuthStatus()) {
+          popup.close()
+          clearInterval(popupInterval)
+          setIsLoading(false)
+          // Remove popup-active class when done
+          document.body.classList.remove('popup-active')
+          window.history.replaceState({}, '', '/newbortoaana/home')
+        }
+      }, 1000)
     } catch (error) {
       console.error('Login error:', error)
       setIsLoading(false)
+      // Remove popup-active class if there's an error
+      document.body.classList.remove('popup-active')
     }
   }
-
-  useEffect(() => {
-    function handleMessage(event) {
-      // Strict origin checking
-      if (event.origin !== ALLOWED_ORIGIN) {
-        console.warn('Received message from unauthorized origin:', event.origin)
-        return
-      }
-
-      // Validate message structure
-      if (!event.data || typeof event.data !== 'object') {
-        return
-      }
-
-      // Validate state to prevent CSRF
-      const savedState = sessionStorage.getItem('facebook_auth_state')
-      if (event.data.state !== savedState) {
-        console.warn('Invalid state parameter')
-        return
-      }
-
-      if (event.data.type === 'FACEBOOK_LOGIN_SUCCESS' && event.data.token) {
-        try {
-          // Clear state after successful validation
-          sessionStorage.removeItem('facebook_auth_state')
-
-          setToken(event.data.token)
-
-          // Set cookies
-          // Cookies.set('facebook_page_token', event.data.token, {
-          //   expires: 1,
-          //   secure: true,
-          //   sameSite: 'None', // Match backend setting
-          //   path: '/'
-          // })
-
-          // Cookies.set('facebook_page_id', event.data.pageId || event.data.token, {
-          //   expires: 1,
-          //   secure: true,
-          //   sameSite: 'None', // Match backend setting
-          //   path: '/'
-          // })
-
-          checkAuthStatus()
-
-          // Use replace instead of pushState for cleaner history
-          window.history.replaceState({}, '', '/newbortoaana/home')
-        } catch (error) {
-          console.error('Error handling login success:', error)
-        }
-      }
-    }
-
-    return () => {
-      window.removeEventListener('message', handleMessage)
-    }
-  }, [])
 
   const handleLogout = () => {
     try {
@@ -142,23 +93,37 @@ const FacebookAuth = () => {
   }
 
   return (
-    <div className="absolute left-[38%] 2xl:left-[37%] top-[39%] 2xl:top-[42%] z-[500]">
-      {!Cookies.get('facebook_page_token') || !Cookies.get('facebook_page_id') ? (
-        <Tooltip placement="top" title="Facebook">
+    <div
+      className="absolute"
+      style={{
+        ...style, // Use the style prop passed from the parent
+        zIndex: 500
+      }}
+    >
+      {!token ? (
+        <Tooltip placement="top" title="Facebook Login">
           <img
             src={FacebookIcon}
             alt="Facebook"
-            onClick={handleFacebookLogin}
+            onClick={handleLogin}
             className={`cursor-pointer h-10 w-10 hover:opacity-50 ${isLoading ? 'opacity-50' : ''}`}
             style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
           />
         </Tooltip>
       ) : (
         <Tooltip title="Facebook" placement="top">
-          <XMarkIcon
+          <div
+            className="cursor-pointer hover:opacity-50"
+            style={{
+              border: '2px solid red',
+              borderRadius: '50%',
+              padding: '2px',
+              pointerEvents: isLoading ? 'none' : 'auto'
+            }}
             onClick={handleLogout}
-            className="text-white border-[6px] p-1 cursor-pointer bg-slate-400 bg-opacity-40 hover:opacity-50 border-sky-300 rounded-full h-10 w-10"
-          />
+          >
+            <img src={FacebookIcon} alt="Facebook" className="h-10 w-10" />
+          </div>
         </Tooltip>
       )}
     </div>

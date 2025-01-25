@@ -13,7 +13,9 @@ export default function Header({ userData, isLoading, error, refreshUserData }) 
   const { refreshStats, updateUserId } = useStats()
 
   const toggleNotifications = () => {
-    setShowNotifications(!showNotifications)
+    console.log('Before toggle:', showNotifications)
+    setShowNotifications((prevState) => !prevState)
+    console.log('After toggle:', !showNotifications)
   }
 
   const toggleModal = () => {
@@ -41,6 +43,7 @@ export default function Header({ userData, isLoading, error, refreshUserData }) 
     localStorage.removeItem('userData')
     localStorage.removeItem('userId')
     localStorage.removeItem('lastInputText')
+    localStorage.removeItem('lastGeneratedVideo')
 
     // Update userId in StatsContext to null
     updateUserId(null) // Call updateUserId
@@ -109,7 +112,12 @@ export default function Header({ userData, isLoading, error, refreshUserData }) 
         </div>
       </div>
 
-      {showNotifications && <NotificationsPopup />}
+      {showNotifications && (
+        <NotificationsPopup
+          onClose={() => setShowNotifications(false)}
+          key={showNotifications.toString()}
+        />
+      )}
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

@@ -10,6 +10,9 @@ const TwitterCallback = () => {
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    // Add popup-active class when component mounts
+    document.body.classList.add('popup-active')
+
     const oauth_token = searchParams.get('oauth_token')
     const oauth_verifier = searchParams.get('oauth_verifier')
     console.log('2auth', oauth_token, oauth_verifier)
@@ -27,10 +30,10 @@ const TwitterCallback = () => {
           Cookies.set('twitter_oauth_token_secret', response.data.data.oauth_token_secret, {
             expires: 7
           })
-          
+
           // Extract user data from the nested structure
           const userData = response.data.data.user.data
-          console.log("User Data:", userData)
+          console.log('User Data:', userData)
           setUserInfo(userData)
         })
         .catch((error) => {
@@ -58,6 +61,13 @@ const TwitterCallback = () => {
       return () => clearTimeout(timer)
     }
   }, [userInfo])
+
+  useEffect(() => {
+    // Cleanup function to remove popup-active class
+    return () => {
+      document.body.classList.remove('popup-active')
+    }
+  }, [])
 
   if (error) {
     return <div className={styles.errorContainer}>Error: {error}</div>

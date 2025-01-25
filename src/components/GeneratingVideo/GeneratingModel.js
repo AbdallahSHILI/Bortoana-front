@@ -16,6 +16,29 @@ export default function GeneratingModal({
   const [isScheduleModal, setIsScheduleModal] = useState(false)
   const [videoTitle, setVideoTitle] = useState('Why Do People Watch Other People Play Video Games?')
 
+  // Reset all states when modal is closed
+  const handleClose = () => {
+    setIsGenerating(true)
+    setIsScheduleModal(false) // Reset schedule modal state
+    if (typeof onClose === 'function') {
+      onClose()
+    }
+  }
+
+  // Handle schedule modal close separately
+  const handleScheduleModalClose = () => {
+    setIsScheduleModal(false)
+    handleClose() // Close the main modal as well
+  }
+
+  // Reset isGenerating when modal is shown
+  useEffect(() => {
+    if (show) {
+      setIsGenerating(true)
+    }
+  }, [show])
+
+  // Only update isGenerating when videoPath changes and is not null
   useEffect(() => {
     if (videoPath) {
       setIsGenerating(false)
@@ -30,12 +53,12 @@ export default function GeneratingModal({
 
   const handleRegenerate = () => {
     setIsGenerating(true)
-    onRegenerate()
+    if (typeof onRegenerate === 'function') {
+      onRegenerate()
+    }
   }
 
   const handleOpen = () => setIsScheduleModal(true)
-  const handleClose = () => setIsScheduleModal(false)
-
   // Function to handle canceling the generating process
   const handleCancelGenerating = async () => {
     try {
@@ -61,9 +84,11 @@ export default function GeneratingModal({
     }
   }
 
+  const extractedFileName = videoPath || ''
+
   return ReactDOM.createPortal(
     <div
-      onClick={isGeneratingOnly ? undefined : onClose}
+      onClick={isGeneratingOnly ? undefined : handleClose}
       className="inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 fixed"
     >
       <div
@@ -110,18 +135,21 @@ export default function GeneratingModal({
 
                 <div className="px-12 pb-2 w-[800px] rounded-xl relative flex items-center justify-center">
                   <ReactPlayer
-                    url={videoPath}
+                    url={extractedFileName}
                     controls={true}
                     width="100%"
                     height="100%"
-                    crossOrigin="anonymous"
                     config={{
                       file: {
                         attributes: {
                           crossOrigin: 'anonymous'
-                        }
+                        },
+                        forceVideo: true,
+                        forceHLS: false,
+                        forceDASH: false
                       }
                     }}
+                    onError={(e) => console.error('ReactPlayer error:', e)}
                   />
                 </div>
 
@@ -140,7 +168,11 @@ export default function GeneratingModal({
       </div>
 
       {isScheduleModal && (
-        <ScheduleModal onClose={handleClose} videoUrl={videoPath} videoTitle={videoTitle} />
+        <ScheduleModal
+          onClose={handleScheduleModalClose}
+          videoUrl={videoPath}
+          videoTitle={videoTitle}
+        />
       )}
 
       <style jsx>{`

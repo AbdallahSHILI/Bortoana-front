@@ -74,7 +74,7 @@ export const publishInstagramStory = async (content) => {
 }
 
 export const handleLinkedinShare = async (content) => {
-  console.log('Publishing to Linkedin:', content)
+  console.log('Publishing to LinkedIn:', content)
 
   try {
     // Get the LinkedIn access token from cookies
@@ -92,7 +92,7 @@ export const handleLinkedinShare = async (content) => {
         Authorization: `Bearer ${accessToken}`
       },
       body: JSON.stringify({
-        videoUrl: content.videoUrl, 
+        videoUrl: content.videoUrl,
         title: content.title
         // description: 'Sharing this awesome video to LinkedIn.'
       })
@@ -104,9 +104,11 @@ export const handleLinkedinShare = async (content) => {
     if (!response.ok) {
       throw new Error(data.error || 'Failed to share video')
     }
+
+    return data
   } catch (err) {
     console.error('Share error:', err)
-  } finally {
+    throw err
   }
 }
 
@@ -150,6 +152,7 @@ export const handleTwitterShare = async (content) => {
     return data
   } catch (err) {
     console.error('Share error:', err)
+
     throw err
   }
 }
@@ -203,7 +206,6 @@ export const publishToSelectedPlatforms = async (selected, content) => {
       }
     }
   }
-
   return {
     success: successes,
     failures: failures
@@ -212,8 +214,7 @@ export const publishToSelectedPlatforms = async (selected, content) => {
 
 const schedulePost = async (platform, content) => {
   try {
-
-    const userId = Cookies.get('userId');
+    const userId = Cookies.get('userId')
 
     const response = await fetch(`http://localhost:5001/api/user/schedule`, {
       method: 'POST',
@@ -224,7 +225,7 @@ const schedulePost = async (platform, content) => {
         platform,
         content,
         scheduledTime: content.scheduledTime,
-        userId 
+        userId
       }),
       credentials: 'include' // Ensure cookies are sent with the request
     })

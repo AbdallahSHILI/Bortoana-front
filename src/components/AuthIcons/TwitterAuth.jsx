@@ -1,21 +1,17 @@
 import { useEffect, useState } from 'react'
 import XIcon from '../../assests/images/icons/x.png'
-import { XMarkIcon } from '@heroicons/react/24/solid'
 import { Tooltip } from '@mui/material'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 
-const XAuth = () => {
+const XAuth = ({ style }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [token, setToken] = useState(null)
-  const [Secrettoken, setSecretToken] = useState(null)
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
 
-  useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? 'https://bortoaana.onrender.com'
+      : 'http://localhost:5001'
 
   const checkAuthStatus = () => {
     const OauthToken = Cookies.get('twitter_oauth_token')
@@ -23,11 +19,9 @@ const XAuth = () => {
 
     if (OauthToken && SecretToken) {
       setToken(OauthToken)
-      setSecretToken(SecretToken)
       return true
     }
     setToken(null)
-    setSecretToken(null)
     return false
   }
 
@@ -37,37 +31,47 @@ const XAuth = () => {
     return () => clearInterval(intervalId)
   }, [])
 
-  const handleTwitterLogin = async () => {
+  const handleLogin = async () => {
+    setIsLoading(true)
     try {
-      const response = await axios.post('http://localhost:5001/api/auth/twitter/Login')
-      const data = response.data
+      const response = await axios.post(`${baseUrl}/api/auth/twitter/Login`)
+      const { url } = response.data
 
-      if (data.url) {
+      if (url) {
         const width = 600
-        const height = 600
-        const left = window.screen.width / 2 - width / 2
-        const top = window.screen.height / 2 - height / 2
+        const height = 800
+        const left = (window.innerWidth - width) / 2
+        const top = (window.innerHeight - height) / 2
+
+        document.body.classList.add('popup-active')
 
         const popup = window.open(
-          data.url,
-          'Twitter Login',
-          `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,location=no,status=no`
+          url,
+          'X Login',
+          `width=${width},height=${height},left=${left},top=${top}`
         )
 
-        const checkPopup = setInterval(() => {
+        const popupInterval = setInterval(() => {
           if (popup.closed) {
-            clearInterval(checkPopup)
-            // Handle popup close event here if needed
+            clearInterval(popupInterval)
+            setIsLoading(false)
+            document.body.classList.remove('popup-active')
+            return
           }
+
           if (checkAuthStatus()) {
-            popup.close() // Close the popup after cookies are set
+            popup.close()
+            clearInterval(popupInterval)
+            setIsLoading(false)
+            document.body.classList.remove('popup-active')
+            window.history.replaceState({}, '', '/newbortoaana/home')
           }
         }, 1000)
-      } else {
-        console.error('Twitter authentication URL not received')
       }
     } catch (error) {
-      console.error('Error initiating Twitter login:', error.response?.data || error.message)
+      console.error('Login error:', error)
+      setIsLoading(false)
+      document.body.classList.remove('popup-active')
     }
   }
 
@@ -83,39 +87,38 @@ const XAuth = () => {
     }
   }
 
-  const getRightPosition = (width) => {
-    if (width >= 1600) {
-      return '44%' // Adjust this value for 1600px screens
-    } else if (width >= 1540) {
-      return '48%' // Adjust this value for 1540px screens
-    } else {
-      return '44%' // Default for smaller screens
-    }
-  }
-
-  const rightPositionMyScreen = getRightPosition(screenWidth)
-
   return (
     <div
-      className="top-[30%]  2xl:top-[33%]"
-      style={{ position: 'absolute', right: rightPositionMyScreen, zIndex: 500 }}
+      className="absolute"
+      style={{
+        ...style, // Use the style prop passed from the parent
+        zIndex: 500
+      }}
     >
       {!token ? (
-        <Tooltip placement="top" title="x Login">
+        <Tooltip placement="top" title="X Login">
           <img
             src={XIcon}
             alt="X"
-            onClick={handleTwitterLogin}
+            onClick={handleLogin}
             className={`cursor-pointer h-10 w-10 hover:opacity-50 ${isLoading ? 'opacity-50' : ''}`}
             style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
           />
         </Tooltip>
       ) : (
         <Tooltip title="X" placement="top">
-          <XMarkIcon
+          <div
+            className="cursor-pointer hover:opacity-50"
+            style={{
+              border: '2px solid red',
+              borderRadius: '50%',
+              padding: '2px',
+              pointerEvents: isLoading ? 'none' : 'auto'
+            }}
             onClick={handleLogout}
-            className="text-white border-[6px] p-1 cursor-pointer bg-slate-400 bg-opacity-40 hover:opacity-50 border-sky-300 rounded-full h-10 w-10"
-          />
+          >
+            <img src={XIcon} alt="X" className="h-10 w-10" />
+          </div>
         </Tooltip>
       )}
     </div>

@@ -23,13 +23,14 @@ export default function Home() {
   const [isZoomed, setIsZoomed] = useState(false)
   const [isSettingsZoomed, setIsSettingsZoomed] = useState(false)
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
-  
+
   // New state for user data management
   const [userData, setUserData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const videoUrl = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+  const videoUrl =
+    'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4'
 
   // Function to process avatar URL
   const getAvatarUrl = (avatarPath) => {
@@ -50,7 +51,7 @@ export default function Home() {
       const response = await fetch(`http://localhost:5001/api/user/getuser/${userId}`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${Cookies.get('google_token')}`,
+          Authorization: `Bearer ${Cookies.get('google_token')}`,
           'Content-Type': 'application/json'
         },
         credentials: 'include'
@@ -103,7 +104,7 @@ export default function Home() {
           <div className="">
             {!isZoomed && !isSettingsZoomed && (
               <div className="pt-10">
-                <Header 
+                <Header
                   userData={userData}
                   isLoading={isLoading}
                   error={error}
@@ -114,15 +115,17 @@ export default function Home() {
             {/* left screen */}
             <div className="">
               {!isZoomed && !isSettingsZoomed && (
-                <div className="flex items-center justify-center flex-col w-60 m-4 absolute bottom-44 left-12 z-20">
-                  <img 
-                    src={imageVideo} 
-                    alt="Personne" 
+                <div className="flex items-center justify-center flex-col w-60 m-4 absolute bottom-44 left-12 z-30">
+                  <img
+                    src={imageVideo}
+                    alt="Personne"
                     className="cursor-pointer rounded-full"
                     onClick={() => setIsVideoModalOpen(true)}
                   />
                   <div className="text-center text-xs text-white z-30">
-                    Bortoana is an AI-powered app that creates stunning videos for easy sharing across social media. Transform ideas into captivating content in just a few clicks!
+                    Bortoana is an AI-powered app that creates stunning videos for easy sharing
+                    across social media. Transform ideas into captivating content in just a few
+                    clicks!
                   </div>
                 </div>
               )}
@@ -158,7 +161,7 @@ export default function Home() {
         </div>
 
         {/* Video Modal */}
-        <BortanaVideo 
+        <BortanaVideo
           isOpen={isVideoModalOpen}
           onClose={() => setIsVideoModalOpen(false)}
           videoUrl={videoUrl}
@@ -174,8 +177,8 @@ export default function Home() {
               transition={{ duration: 0.5, ease: 'easeInOut' }}
               className="absolute top-0 right-0 bottom-0 z-40 w-3/5 flexshadow-lg"
             >
-              <SettingsForm 
-                onClose={() => setIsSettingsZoomed(false)} 
+              <SettingsForm
+                onClose={() => setIsSettingsZoomed(false)}
                 userData={userData}
                 refreshUserData={refreshUserData}
               />

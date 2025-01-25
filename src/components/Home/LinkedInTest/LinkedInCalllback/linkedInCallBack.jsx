@@ -4,47 +4,42 @@ import Cookies from 'js-cookie'
 import styles from './linkedInCallBack.module.css'
 
 const LinkedInCallback = () => {
-  const [userInfo, setUserInfo] = useState(null) // To store user info
-  const [error, setError] = useState(null) // To store errors
+  const [userInfo, setUserInfo] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
+    // Add popup-active class when component mounts
+    document.body.classList.add('popup-active')
+
     const handleCallback = async () => {
       const params = new URLSearchParams(window.location.search)
-
-      // Log the full URL for debugging
-      console.log('Full URL:', window.location.href)
 
       const error = params.get('error')
       if (error) {
         console.error('LinkedIn Auth Error:', error)
-        console.error('Error Description:', params.get('error_description'))
-        alert('LinkedIn Authentication Failed: ' + error)
+        setError('LinkedIn Authentication Failed: ' + error)
         return
       }
 
       const code = params.get('code')
       const state = params.get('state')
-      console.log('code', code)
-      console.log('state', state)
       const storedState = sessionStorage.getItem('linkedinState')
-      console.log('storedState', storedState)
-      
 
-      // Validation
       if (!code || !state) {
         setError('Authentication failed. Missing code or state.')
         return
       }
 
       try {
-        console.log('LinkedIn Authentication beggin')
-        // Make request to your backend LinkedIn callback endpoint
+        const baseUrl =
+          process.env.NODE_ENV === 'production'
+            ? 'https://bortoaana.onrender.com'
+            : 'http://localhost:5001'
+
         const response = await axios.get(
-          `http://localhost:5001/api/auth/linkedin/Callback?code=${code}&state=${state}`,
+          `${baseUrl}/api/auth/linkedin/Callback?code=${code}&state=${state}`,
           { withCredentials: true }
         )
-        console.log('response', response)
-        console.log('LinkedIn Authentication successful:', response.data)
 
         Cookies.set('linkedin_oauth_access_token', response.data.accessToken, {
           expires: 7,
@@ -53,13 +48,15 @@ const LinkedInCallback = () => {
           path: '/'
         })
 
-        // Save user info (assuming backend returns user data)
         const userData = response.data.user
+        setUserInfo(userData)
 
-        setUserInfo(userData) // Update state
-
-        // Store user info in cookies for persistence
         Cookies.set('linkedin_user_info', JSON.stringify(userData), { expires: 7 })
+
+        // Notify opener window of success
+        if (window.opener) {
+          window.opener.postMessage('LINKEDIN_LOGIN_SUCCESS', '*')
+        }
       } catch (error) {
         console.error('Error during LinkedIn callback:', error)
         const errorMessage =
@@ -72,23 +69,19 @@ const LinkedInCallback = () => {
     }
 
     handleCallback()
+
+    // Cleanup function to remove popup-active class
+    return () => {
+      document.body.classList.remove('popup-active')
+    }
   }, [])
 
-  // Log updated userInfo after state update
-  useEffect(() => {
-    if (userInfo) {
-      console.log('Updated userInfo:', userInfo)
-    }
-  }, [userInfo])
-
-  // Add new useEffect for auto-closing
   useEffect(() => {
     if (userInfo) {
       const timer = setTimeout(() => {
         window.close()
       }, 3000)
 
-      // Cleanup timeout if component unmounts
       return () => clearTimeout(timer)
     }
   }, [userInfo])
@@ -98,7 +91,6 @@ const LinkedInCallback = () => {
   }
 
   if (!userInfo) {
-    // Display loading state
     return (
       <div className={styles.container}>
         <div className={styles.loadingContainer}>
@@ -109,7 +101,6 @@ const LinkedInCallback = () => {
     )
   }
 
-  // Display success message
   return (
     <div className={styles.container}>
       <h2 className={styles.successTitle}>Authentication Successful! 🎉</h2>

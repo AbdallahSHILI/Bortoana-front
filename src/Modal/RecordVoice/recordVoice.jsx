@@ -138,8 +138,8 @@ const VoiceRecorderModal = ({ isOpen, onClose, onSave }) => {
     `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-start p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md ml-80">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-start p-4 z-40">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md ml-40">
         <div className="p-4 border-b flex justify-between items-center">
           <h2 className="text-lg font-semibold">Record Your Voice</h2>
           <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full">
