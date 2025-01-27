@@ -138,45 +138,53 @@ const VoiceRecorderModal = ({ isOpen, onClose, onSave }) => {
     `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-start p-4 z-40">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md ml-40">
-        <div className="p-4 border-b flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Record Your Voice</h2>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-2 sm:p-4 z-40">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-auto max-h-[40vh] sm:max-h-[60vh] overflow-y-auto hide-scrollbar">
+        <div className="p-2 sm:p-4 border-b flex justify-between items-center">
+          <h2 className="text-base sm:text-lg font-semibold">Record Your Voice</h2>
           <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full">
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
-        <div className="p-4 space-y-4">
+        <div className="p-2 sm:p-4 space-y-2 sm:space-y-4">
           {state.error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm">{state.error}</div>
+            <div className="bg-red-50 text-red-500 p-2 rounded-md text-xs sm:text-sm">
+              {state.error}
+            </div>
           )}
 
-          <div className="text-center text-2xl font-mono">{formatTime(state.recordingTime)}</div>
+          <div className="text-center text-lg sm:text-2xl font-mono">
+            {formatTime(state.recordingTime)}
+          </div>
 
-          <div ref={waveformRef} className="bg-gray-50 rounded-lg p-2 h-24" />
+          <div ref={waveformRef} className="bg-gray-50 rounded-lg p-2 h-12 sm:h-16 md:h-20" />
 
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-2 sm:gap-4">
             {!state.isRecording ? (
               <button
                 onClick={startRecording}
-                className="bg-red-500 hover:bg-red-600 text-white p-4 rounded-full"
+                className="bg-red-500 hover:bg-red-600 text-white p-2 sm:p-4 rounded-full"
               >
-                <Mic className="w-6 h-6" />
+                <Mic className="w-4 h-4 sm:w-6 sm:h-6" />
               </button>
             ) : (
               <>
                 <button
                   onClick={togglePause}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-white p-4 rounded-full"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 sm:p-4 rounded-full"
                 >
-                  {state.isPaused ? <Play className="w-6 h-6" /> : <Pause className="w-6 h-6" />}
+                  {state.isPaused ? (
+                    <Play className="w-4 h-4 sm:w-6 sm:h-6" />
+                  ) : (
+                    <Pause className="w-4 h-4 sm:w-6 sm:h-6" />
+                  )}
                 </button>
                 <button
                   onClick={stopRecording}
-                  className="bg-red-500 hover:bg-red-600 text-white p-4 rounded-full"
+                  className="bg-red-500 hover:bg-red-600 text-white p-2 sm:p-4 rounded-full"
                 >
-                  <Square className="w-6 h-6" />
+                  <Square className="w-4 h-4 sm:w-6 sm:h-6" />
                 </button>
               </>
             )}
@@ -185,7 +193,7 @@ const VoiceRecorderModal = ({ isOpen, onClose, onSave }) => {
           <button
             onClick={handleSave}
             disabled={!state.audioUrl || state.isLoading}
-            className={`w-full py-2 px-4 rounded-lg text-white text-lg
+            className={`w-full py-1.5 sm:py-2 px-3 rounded-lg text-white text-sm sm:text-base
               ${
                 state.audioUrl && !state.isLoading
                   ? 'bg-green-500 hover:bg-green-600'

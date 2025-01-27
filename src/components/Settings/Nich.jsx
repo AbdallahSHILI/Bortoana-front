@@ -69,8 +69,7 @@ const NichGenerator = ({ onClose }) => {
   )
 
   return (
-    <div className="overflow-y-scroll  fixed inset-0 flex justify-center items-center z-50">
-      {/* Full-screen background overlay */}
+    <div className="fixed inset-0 flex justify-center items-center z-50 overflow-y-auto">
       <motion.div
         className="fixed inset-0 bg-black"
         onClick={onClose}
@@ -79,18 +78,18 @@ const NichGenerator = ({ onClose }) => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
       />
-      <div className="flex  right-0 justify-between space-x-1 w-full ">
-        {/* left section */}
-        <div className="relative h-[800px] ml-28 z-10 pr-0 p-12 ">
-          <div className="bg-[#303030] rounded-xl flex flex-col gap-4  px-6 my-4 py-6">
-            <div className="flex justify-between">
-              <h2 className="text-5xl text-gray-400 font-bold ">Set up your nich</h2>
+      <div className="flex w-full max-w-screen-xl mx-auto relative">
+        {/* Left section */}
+        <div className="w-full lg:w-5/6 z-10 max-h-[90vh] overflow-y-scroll hide-scrollbar">
+          <div className="bg-[#303030] rounded-xl flex flex-col gap-2 px-4 md:px-8 my-4 py-6 w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-3xl md:text-5xl text-gray-400 font-bold">Set up your nich</h2>
               <XMarkIcon
                 onClick={onClose}
-                className=" cursor-pointer top-4 right-8 rounded-full h-7 w-7 text-white hover:bg-gray-500 "
-              />{' '}
+                className="cursor-pointer rounded-full h-7 w-7 text-white hover:bg-gray-500"
+              />
             </div>
-            <div className="grid grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {console.log('Parent rendering, handleNich:', handleNich)}
 
               <NichCard
@@ -202,30 +201,24 @@ const NichGenerator = ({ onClose }) => {
           </div>
         </div>
         {/* right section */}
-        <div className="z-20  h-screen">
-          <div className=" pt-36 right-0">
-            <div className="flex flex-row items-center ">
-              <PaintBrushIcon className="text-white  h-10 w-10" />
-              <h1 className="text-white  pl-2 text-2xl">Tools</h1>
+        <div className="hidden lg:block fixed right-0 z-20 h-screen">
+          <div className="pt-36">
+            <div className="flex flex-row items-center">
+              <PaintBrushIcon className="text-white h-10 w-10" />
+              <h1 className="text-white pl-2 text-2xl">Tools</h1>
             </div>
 
             <div
-              className=" w-40 sm:w-10 lg:w-52 h-7 sm:h-7 lg:h-56 rounded-l-3xl flex items-center justify-center"
+              className="w-52 h-56 rounded-l-3xl flex items-center justify-center"
               style={{
                 background: 'linear-gradient(to right, #E5E5EA, #81818421)'
               }}
             >
               <div className="flex flex-col items-center">
-                <div className="lg:h-32 lg:w-32 w-8 h-8 sm:w-6 sm:h-6 rounded-full bg-white flex items-center justify-center">
-                  <img
-                    alt="Nich_Icon"
-                    className="lg:w-20 lg:h-20 sm:w-4 sm:h-4 w-6 h-6"
-                    src={NichIcon}
-                  />
+                <div className="h-32 w-32 rounded-full bg-white flex items-center justify-center">
+                  <img alt="Nich_Icon" className="w-20 h-20" src={NichIcon} />
                 </div>
-                <div className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mt-2 lg:mt-4">
-                  Nich
-                </div>
+                <div className="text-white text-3xl font-bold mt-4">Nich</div>
               </div>
             </div>
           </div>

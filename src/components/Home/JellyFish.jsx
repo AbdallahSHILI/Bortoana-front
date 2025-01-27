@@ -237,7 +237,7 @@ const JellyFish = ({ isZoomed, setIsZoomed, isSettingsZoomed, setIsSettingsZoome
                 ? `${
                     isSettingsZoomed
                       ? 'translate(-70%, 18%) scale(1.5)'
-                      : 'translate(-20%, 10%) scale(1.1)'
+                      : 'translate(-10%, 10%) scale(1.1)'
                   }`
                 : `translate(-50%, -50%) scale(${screenWidth > 2100 ? 0.9 : 0.75})`,
             pointerEvents: 'none'
