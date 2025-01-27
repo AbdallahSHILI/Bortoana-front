@@ -4,6 +4,7 @@ import CongratsIcon from '../../assests/images/SettingsIcons/CongratsIcon.svg'
 import { ArrowPathIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import axios from 'axios'
 import LoadingHashtag from './LoadingHashtags'
+import sorryIcon from '../../assests/images/settings/SorryIcon.svg'
 import Cookies from 'js-cookie'
 
 const HashtagModal = ({
@@ -24,7 +25,6 @@ const HashtagModal = ({
   const GenerateHashtags = async () => {
     if (existingNich) {
       setLoading(true)
-
       try {
         const response = await axios.post(`${baseUrl}/api/user/generate_hashtags`, {
           nich: existingNich
@@ -41,12 +41,11 @@ const HashtagModal = ({
 
   const handleSave = async () => {
     try {
-      // Send the hashtags to the server or wherever you need them
       const response = await axios.post(`${baseUrl}/api/user/setHashtags/${id}`, {
         hashtags
       })
       console.log('Hashtags saved successfully:', response.data)
-      handleCloseGenerate() // Close the modal after saving
+      handleCloseGenerate()
     } catch (error) {
       console.error('Error saving hashtags:', error)
     }
@@ -54,7 +53,7 @@ const HashtagModal = ({
 
   useEffect(() => {
     if (existingNich) {
-      setHashtags([]) // Clear previous hashtags
+      setHashtags([])
       GenerateHashtags()
     }
   }, [])
@@ -62,9 +61,68 @@ const HashtagModal = ({
   if (loading) {
     return <LoadingHashtag />
   }
+
+  // If no niche is selected, show the warning modal
+  if (!existingNich) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center z-50">
+        {/* Background overlay */}
+        <motion.div
+          className="fixed inset-0 bg-black"
+          onClick={handleCloseGenerate}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.7 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        />
+
+        {/* Modal container */}
+        <div
+          className="bg-[#1F1F1F] border-4 border-[#4B4B4B] rounded-xl p-10 max-w-2xl w-full mx-4 relative z-50" // Changed border to border-2
+          style={{ boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}
+        >
+          {/* Close button with white circle */}
+          <div className="absolute top-4 right-4">
+            <div className="bg-white rounded-full p-1 cursor-pointer hover:bg-gray-200 transition-colors">
+              <XMarkIcon
+                onClick={handleCloseGenerate}
+                className="h-8 w-8 text-[#1F1F1F]" // Adjusted icon size and color
+              />
+            </div>
+          </div>
+
+          {/* Icon */}
+          <div className="flex justify-center mb-8">
+            <img src={sorryIcon} alt="Sorry Icon" className="w-20 h-20" />
+          </div>
+
+          {/* Heading */}
+          <h2 className="text-white text-3xl font-bold text-center mb-6">Hold on a moment!</h2>
+
+          {/* Description */}
+          <p className="text-gray-400 text-center mb-10 text-lg">
+            To generate hashtags with AI, you first need to set up your niche. Let's get that done
+            to ensure the best results!
+          </p>
+
+          {/* Button */}
+          <div className="flex justify-center">
+            <button
+              onClick={handleCloseGenerate}
+              className="bg-[#0004FF] hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors text-lg"
+            >
+              Set up my Niche
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Original hashtag generation modal
   return (
     <div className="overflow-y-scroll w-screen h-screen fixed inset-0 flex justify-center items-center z-50">
-      {/* Full-screen background overlay */}
+      {/* Rest of your existing modal code */}
       <motion.div
         className="fixed inset-0 w-full h-full bg-black"
         onClick={handleCloseGenerate}

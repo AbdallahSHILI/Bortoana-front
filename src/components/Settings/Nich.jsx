@@ -52,7 +52,7 @@ const NichGenerator = ({ onClose }) => {
       handleGetNich()
     }
     console.log('nich', existingNich)
-  }, [id]) // Problem is here
+  }, [id])
 
   const handleNich = useCallback(
     async (nich) => {
